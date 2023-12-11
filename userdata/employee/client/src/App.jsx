@@ -11,6 +11,7 @@ import RegFormComponent from './components/RegFormComponent'
 import LinkComponent from './components/LinkComponent'
 import EmployeeComponent from './components/EmployeeComponent';
 import MainPageComponent from './components/MainPageComponent'
+import SuccessComponent from './components/SuccessComponent'
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
    {/* <LinkComponent/> */}
    <MainPageComponent/>
    {/* <Employee2/> */}
+   {/* <SuccessComponent/> */}
 
     </>
   )

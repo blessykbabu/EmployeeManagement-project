@@ -461,12 +461,15 @@
 
 // .............................yup.......................
 import React from "react";
+import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { object, string, number } from "yup";
 import axios from "axios";
 import "./reg.css";
+import SuccessComponent from "./SuccessComponent";
 
 export default function RegFormComponent() {
+  const [serverSuccess, setServerSuccess] = useState("");
   const initialValues = {
     name: "",
     email: "",
@@ -487,9 +490,12 @@ export default function RegFormComponent() {
         `http://localhost:3000/api/register`,
         values
       );
+
       console.log("Form Submitted", response.data);
+
+      setServerSuccess(response.data.success)
       resetForm();
-      alert("Registered");
+      // alert("Registered");
     } catch (error) {
       console.error("Not Submitted", error);
     }
@@ -497,6 +503,7 @@ export default function RegFormComponent() {
 
   return (
     <>
+    
       <h3 style={{ textAlign: "center", padding: 20, color: "black" }}>
         Employee Registeration Form
       </h3>
@@ -512,7 +519,7 @@ export default function RegFormComponent() {
                 .required("Required"),
               email: string().email().required("Required"),
 
-              phone:string()
+              phone: string()
                 // .typeError("That doesn't look like a phone number")
                 // .positive("A phone number can't start with a minus")
                 // .integer("A phone number can't include a decimal point")
@@ -815,7 +822,9 @@ export default function RegFormComponent() {
                   <button className="btn btn-success m-3" type="submit">
                     Submit
                   </button>
+                 
                 </div>
+                {serverSuccess && <SuccessComponent/>}
               </Form>
             )}
           </Formik>
