@@ -1,5 +1,5 @@
 import './ErrorComponentcss.css'
-export default function ErrorComponent(){
+const ErrorComponent= ({ onClose }) => {
 
 return(
     <>
@@ -29,3 +29,4 @@ return(
 </>
 )
 };
+export default ErrorComponent

@@ -135,7 +135,7 @@
 import userSchema from "./model/employee.schema.js";
 import { successFunction } from "./utils/response-handler.js";
 import { errorFunction } from "./utils/response-handler.js";
-
+import { Regvalidator } from "./validation/RegValidator.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -157,6 +157,9 @@ export async function register(req, res) {
       password,
       cemail,
     } = req.body;
+    
+    let valiadtionResult=Regvalidator(req.body)
+    console.log("valiadtionResult",valiadtionResult);
     // if( username.length <= 4 && password.length <= 4) {
     //     return res.json("Invalid username or password");
     // }

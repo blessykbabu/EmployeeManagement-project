@@ -831,7 +831,7 @@ export default function RegFormComponent() {
                  
                 </div>
                 {serverSuccess && <SuccessComponent onClose={() => setServerSuccess(false)}/> }
-                {serverError && <ErrorComponent  onClose={() => SetServeError(false)}/> }
+                {serverError && <ErrorComponent  onClose={() => SetServeError("")}/> }
               </Form>
             )}
           </Formik>
