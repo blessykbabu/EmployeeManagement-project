@@ -251,7 +251,7 @@ console.log()
               >
                 Update
               </button>
-              <Link to="/view">
+             
                 <button
                   onClick={handleDelete}
                   type="button"
@@ -260,7 +260,7 @@ console.log()
                 >
                   Delete
                 </button>
-              </Link>
+              {/* </Link> */}
               </div>
           </form>
         </div>

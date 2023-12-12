@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 // import EmployeeComponent from "./EmployeeComponent";
 export default function EmployeeProfileComponent(){
   const {id}=useParams();
-  const [serverMessage, setServerMessage] = useState('');
+  // const [serverMessage, setServerMessage] = useState('');
     const [Lists,setLists]=useState([]);
     // api fetch for employee list
   
@@ -17,12 +17,12 @@ export default function EmployeeProfileComponent(){
       .then((response)=>{
           setLists(response.data.data);
           console.log(response)
-         setServerMessage(response.data.message)
+        //  setServerMessage(response.data.message)
         //  alert(response.data.message)
       })
       .catch((error)=>{
          console.log("get eror:",error.message? error.message:error)
-         setServerMessage(response.data.message,response.data.statuscode);
+         
        })
     },[])
    
@@ -35,7 +35,7 @@ export default function EmployeeProfileComponent(){
 //  UI
 return (
     <>
-     {serverMessage && <p>{serverMessage}</p>}
+     {/* {serverMessage && <p>{serverMessage}</p>} */}
     <div className="listTable">
 
         <h2 style={{textAlign:"center",color:"white"}}>EMPLOYEE LIST</h2>

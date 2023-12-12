@@ -1,6 +1,5 @@
-import './SuccessComponnetCss.css'
-import { Link } from 'react-router-dom'
-export default function SuccessComponent(){
+import "./SuccessComponnetCss.css"
+const SuccessComponent = ({ onClose }) => {
 
 return(
     <>
@@ -41,11 +40,12 @@ return(
     <p id="message">
       Congratulations, your account has been successfully created.
     </p>
-    <Link to="" id="contBtn" > Continue
-    </Link>
+    <button id="contBtn"style={{border:0}} onClick={onClose} >OK
+    </button>
      
   </div>
 </div>
 </>
 )
 };
+export default SuccessComponent

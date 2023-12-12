@@ -190,8 +190,17 @@ import { useParams } from 'react-router-dom';
 import EditForm from './EditForm';
 import axios from "axios"
 
+import SuccessUpdate from './SuccessUpdate';
+
+import SuccessComponent from './SuccessComponent';
+import SuccessDelete from './SuccessDelete';
+
+
+
 const EmployeeComponent = () => {
   let { id } = useParams("");
+  const [serverSuccess, setServerSuccess] = useState("");
+  const [DeleteSucces,SetDeleteSuccess]=useState("");
   const [initialData, setInitialData] = useState({
     name: "",
     email: "",
@@ -204,12 +213,11 @@ const EmployeeComponent = () => {
     jdate: "",
     exp: "",
     cemail: ""
-    // Add more fields as needed
+    
   });
 
   useEffect(() => {
-    // Fetch data for editing (e.g., from an API) and set it as initialData
-    // Example: fetch('/api/user/123').then(response => response.json()).then(data => setInitialData(data));
+    
  
     axios.get(`http://localhost:3000/api/get-employee/${id}`)
           .then((response) => {
@@ -238,6 +246,7 @@ const EmployeeComponent = () => {
             // SetUpdate(response.data);
             //  console.log(response.data)
             console.log('updated successfully:', response.data.data);
+            setServerSuccess(response.data.success)
             // alert("updated")
             // setServerMessage(response.data.message);
           })
@@ -252,9 +261,10 @@ const EmployeeComponent = () => {
     try {
       axios.delete(`http://localhost:3000/api/delete/${id}`)
     .then((response) => {
-      setInitialData(response.data)
+      // setInitialData(response.data)
+      SetDeleteSuccess(response.data.success)
       console.log('delete successfully:', response.data);
-      alert("Deleted")
+      // alert("Deleted")
     })
     } catch (error) {
       console.log("delete error:",error)
@@ -265,8 +275,10 @@ const EmployeeComponent = () => {
 
   return (
     <div>
-      <h1>Edit Page</h1>
+      
       <EditForm initialValues={initialData} onSubmit={handleSubmit} onClick={handleDelete}/>
+      {serverSuccess && <SuccessUpdate onClose={() => setServerSuccess(false)}/>}
+      {DeleteSucces && <SuccessDelete onClose={() => SetDeleteSuccess(false)} />}
     </div>
   );
 };

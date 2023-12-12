@@ -467,9 +467,11 @@ import { object, string, number } from "yup";
 import axios from "axios";
 import "./reg.css";
 import SuccessComponent from "./SuccessComponent";
+import ErrorComponent from "./ErrorComponent";
 
 export default function RegFormComponent() {
   const [serverSuccess, setServerSuccess] = useState("");
+  const[serverError,SetServeError]=useState("")
   const initialValues = {
     name: "",
     email: "",
@@ -498,13 +500,17 @@ export default function RegFormComponent() {
       // alert("Registered");
     } catch (error) {
       console.error("Not Submitted", error);
+      SetServeError(true)
     }
   };
+//  const  handleClose =()=>{
+//   serverSuccess=null;
+//  }
 
   return (
     <>
     
-      <h3 style={{ textAlign: "center", padding: 20, color: "black" }}>
+      <h3 style={{ textAlign: "center", padding: 20, color: "white" }}>
         Employee Registeration Form
       </h3>
       <div className="regfrm">
@@ -824,7 +830,8 @@ export default function RegFormComponent() {
                   </button>
                  
                 </div>
-                {serverSuccess && <SuccessComponent/>}
+                {serverSuccess && <SuccessComponent onClose={() => setServerSuccess(false)}/> }
+                {serverError && <ErrorComponent  onClose={() => SetServeError(false)}/> }
               </Form>
             )}
           </Formik>
