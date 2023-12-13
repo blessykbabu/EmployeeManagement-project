@@ -194,6 +194,7 @@ import SuccessUpdate from './SuccessUpdate';
 
 import SuccessComponent from './SuccessComponent';
 import SuccessDelete from './SuccessDelete';
+import ErrorComponent from './ErrorComponent';
 
 
 
@@ -201,6 +202,8 @@ const EmployeeComponent = () => {
   let { id } = useParams("");
   const [serverSuccess, setServerSuccess] = useState("");
   const [DeleteSucces,SetDeleteSuccess]=useState("");
+  const [deleteError,setdeleteError]=useState("");
+  const [updateError,setupdateError]=useState("");
   const [initialData, setInitialData] = useState({
     name: "",
     email: "",
@@ -252,6 +255,7 @@ const EmployeeComponent = () => {
           })
           .catch((error) => {
             console.log(" axios get eror:", error.message ? error.message : error)
+            setupdateError(true)
     
           })
     console.log('Updated values:', values);
@@ -267,6 +271,7 @@ const EmployeeComponent = () => {
       // alert("Deleted")
     })
     } catch (error) {
+      setdeleteError(true)
       console.log("delete error:",error)
     }
   
@@ -279,6 +284,8 @@ const EmployeeComponent = () => {
       <EditForm initialValues={initialData} onSubmit={handleSubmit} onClick={handleDelete}/>
       {serverSuccess && <SuccessUpdate onClose={() => setServerSuccess(false)}/>}
       {DeleteSucces && <SuccessDelete onClose={() => SetDeleteSuccess(false)} />}
+      {deleteError && <ErrorComponent onClose={() => setdeleteError(false)} />}
+      {updateError && <ErrorComponent onClose={() => setupdateError(false)}/>}
     </div>
   );
 };

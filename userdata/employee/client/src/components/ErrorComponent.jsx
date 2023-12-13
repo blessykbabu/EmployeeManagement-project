@@ -19,9 +19,9 @@ return(
   </div>
   <div id="lower-side">
     <p id="message">
-      Registration Failed !
+      Something went wrong!
     </p>
-    <button id="contBtnREG" style={{border:0}}>
+    <button id="contBtnREG" style={{border:0}} onClick={onClose} >
     Continue
     </button>
   </div>

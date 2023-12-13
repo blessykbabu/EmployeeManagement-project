@@ -138,6 +138,7 @@ import { errorFunction } from "./utils/response-handler.js";
 import { Regvalidator } from "./validation/RegValidator.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { updateValidator } from "./validation/updateValidator.js";
 
 const { sign } = jwt;
 
@@ -158,7 +159,7 @@ export async function register(req, res) {
       cemail,
     } = req.body;
     
-    let valiadtionResult=Regvalidator(req.body)
+    let valiadtionResult=await Regvalidator(req.body)
     console.log("valiadtionResult",valiadtionResult);
     // if( username.length <= 4 && password.length <= 4) {
     //     return res.json("Invalid username or password");
@@ -365,6 +366,8 @@ export async function update(req, res) {
       exp,
       cemail,
     } = req.body;
+    let updateValiadationResult=await updateValidator(req.body)
+    console.log("updateValiadationResult::", updateValiadationResult)
     const result = await userSchema.updateOne(
       { _id: id },
       {
