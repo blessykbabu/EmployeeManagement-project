@@ -159,11 +159,12 @@ export async function register(req, res) {
       cemail,
     } = req.body;
     
-    let valiadtionResult=await Regvalidator(req.body)
-    console.log("valiadtionResult",valiadtionResult);
+    let validationResult=await Regvalidator(req.body)
+    console.log("valiadtionResult",validationResult);
     // if( username.length <= 4 && password.length <= 4) {
     //     return res.json("Invalid username or password");
     // }
+    if(validationResult.isValid){
     let hashedPass = await bcrypt.hash(password, 10);
     let userExist = await userSchema.findOne({
       $and: [{ email: email }, { deleted: { $ne: true } }],
@@ -178,6 +179,8 @@ export async function register(req, res) {
     }
     // let empdata={ name,email,phone,place,district,state,role,date,jdate,exp,password: hashedPass}
     // console.log("empdata",empdata)
+
+    
     let result = await userSchema.create({
       name,
       email,
@@ -208,6 +211,14 @@ export async function register(req, res) {
       });
       return res.status(400).send(response);
     }
+  }else{
+    let response = errorFunction({
+      statusCode: 500,
+      message: "validation failed",
+    });
+    response.error=validationResult.errors
+    return res.status(200).send(response);
+  }
   } catch (error) {
     console.log(error);
     // res.status(500).send("Error");
@@ -242,7 +253,7 @@ export async function register(req, res) {
 //                 msg: "Login successful...",
 //                 token: token
 //             })
-//         }
+//         }response.data.message
 //         return res.status(403).send("invalid username or password")
 //     } catch (error) {
 //         console.log(error);
@@ -368,6 +379,7 @@ export async function update(req, res) {
     } = req.body;
     let updateValiadationResult=await updateValidator(req.body)
     console.log("updateValiadationResult::", updateValiadationResult)
+    if(updateValiadationResult.isValid){
     const result = await userSchema.updateOne(
       { _id: id },
       {
@@ -394,6 +406,15 @@ export async function update(req, res) {
         message: "Profile update successfully",
       });
       return res.status(200).send(response);
+    }
+    else{
+      let response = errorFunction({
+        statusCode: 500,
+        message: "validation failed in update",
+      });
+      response.error=updateValiadationResult.errors
+      return res.status(500).send(response);
+    }
   } catch (error) {
     console.log(error);
     // return res.status(500).send("error occured");

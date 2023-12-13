@@ -472,6 +472,7 @@ import ErrorComponent from "./ErrorComponent";
 export default function RegFormComponent() {
   const [serverSuccess, setServerSuccess] = useState("");
   const[serverError,SetServeError]=useState("")
+  const [validationMsg,setvalidationMsg]=useState("")
   const initialValues = {
     name: "",
     email: "",
@@ -495,12 +496,23 @@ export default function RegFormComponent() {
 
       console.log("Form Submitted", response.data);
 
-      setServerSuccess(response.data.success)
+      // setServerSuccess(response.data.success)
+      if(response.data.success){
+        setServerSuccess(true)
+      }
+      else{
+        console.log("response.data.message",response.data.message);
+        setvalidationMsg(response.data.message);
+        SetServeError(true);
+        // setServerSuccess(false)
+
+      }
       resetForm();
       // alert("Registered");
     } catch (error) {
       console.error("Not Submitted", error);
       SetServeError(true)
+      console.log("response.data.errors",response.data.errors)
     }
   };
 //  const  handleClose =()=>{
@@ -831,7 +843,7 @@ export default function RegFormComponent() {
                  
                 </div>
                 {serverSuccess && <SuccessComponent onClose={() => setServerSuccess(false)}/> }
-                {serverError && <ErrorComponent  onClose={() => SetServeError("")}/> }
+                {serverError && <ErrorComponent message={validationMsg} onClose={() => SetServeError("")}/> }
               </Form>
             )}
           </Formik>

@@ -1,5 +1,5 @@
 import './ErrorComponentcss.css'
-const ErrorComponent= ({ onClose }) => {
+const ErrorComponent= ({ onClose ,message}) => {
 
 return(
     <>
@@ -19,7 +19,8 @@ return(
   </div>
   <div id="lower-side">
     <p id="message">
-      Something went wrong!
+      {/* Something went wrong! */}
+{message}
     </p>
     <button id="contBtnREG" style={{border:0}} onClick={onClose} >
     Continue
