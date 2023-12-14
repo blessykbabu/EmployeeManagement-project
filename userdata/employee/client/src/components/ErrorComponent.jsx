@@ -20,7 +20,7 @@ return(
   <div id="lower-side">
     <p id="message">
       {/* Something went wrong! */}
-{message}
+      {message}
     </p>
     <button id="contBtnREG" style={{border:0}} onClick={onClose} >
     Continue

@@ -1,24 +1,23 @@
 // EditForm.js
-import React from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
-import validationSchema from './validationSchema';
+import React from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { Link } from "react-router-dom";
+import validationSchema from "./validationSchema";
 
-const EditForm = ({ initialValues, onSubmit,onClick }) => {
+const EditForm = ({ initialValues, onSubmit, onClick,backendError }) => {
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: values => {
+    onSubmit: (values) => {
       onSubmit(values);
     },
     enableReinitialize: true,
   });
   const handleDelete = () => {
     onClick();
-    
   };
-console.log()
+  console.log();
   return (
     <>
       <h3 style={{ textAlign: "center", padding: 20, color: "white" }}>
@@ -31,11 +30,6 @@ console.log()
               className="shadow-lg bg-body rounded"
               style={{ backgroundColor: "white", opacity: 0.75 }}
             >
-              <div>
-                <p style={{ textAlign: "center", margin: 10 }}>
-                  PERSONAL INFORMATION
-                </p>
-              </div>
               <div className="mb-3 " style={{ padding: 20 }}>
                 <label htmlFor="name" className="form-label">
                   Name
@@ -50,12 +44,12 @@ console.log()
                   value={formik.values.name}
                 />
                 {formik.touched.name && formik.errors.name && (
-                  <div style={{color:"red"}}>{formik.errors.name}</div>
+                  <div style={{ color: "red" }}>{formik.errors.name}</div>
                 )}
               </div>
               <div className="mb-3 " style={{ padding: 20 }}>
                 <label htmlFor="email" className="form-label">
-                  Personal Email
+                  Email
                 </label>
                 <input
                   id="email"
@@ -67,8 +61,9 @@ console.log()
                   value={formik.values.email}
                 />
                 {formik.touched.email && formik.errors.email && (
-                  <div style={{color:"red"}}>{formik.errors.email}</div>
+                  <div style={{ color: "red" }}>{formik.errors.email}</div>
                 )}
+                  {backendError.email_exist && <div>{backendError.email_exist}</div>}
               </div>
               <div className="mb-3" style={{ padding: 20 }}>
                 <label htmlFor="phone" className="form-label">
@@ -84,26 +79,10 @@ console.log()
                   value={formik.values.phone}
                 />
                 {formik.touched.phone && formik.errors.phone && (
-                  <div style={{color:"red"}}>{formik.errors.phone}</div>
+                  <div style={{ color: "red" }}>{formik.errors.phone}</div>
                 )}
               </div>
-              <div className="mb-3" style={{ padding: 20 }}>
-                <label htmlFor="place" className="form-label">
-                  Place
-                </label>
-                <input
-                id="place"
-                name="place"
-                type="text"
-                className="form-control"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.place}
-              />
-              {formik.touched.place && formik.errors.place && (
-                <div style={{color:"red"}}>{formik.errors.place}</div>
-              )}
-              </div>
+
               <div className="mb-3" style={{ padding: 20 }}>
                 <label htmlFor="district" className="form-label">
                   District
@@ -118,49 +97,8 @@ console.log()
                   value={formik.values.district}
                 />
                 {formik.touched.district && formik.errors.district && (
-                  <div style={{color:"red"}}>{formik.errors.district}</div>
+                  <div style={{ color: "red" }}>{formik.errors.district}</div>
                 )}
-              </div>
-              <div className="mb-3" style={{ padding: 20 }}>
-                <label htmlFor="state" className="form-label">
-                  State
-                </label>
-                <input
-                  id="state"
-                  name="state"
-                  type="state"
-                  className="form-control"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.state}
-                />
-                {formik.touched.state && formik.errors.state&& (
-                  <div style={{color:"red"}}>{formik.errors.state}</div>
-                )}
-              </div>
-
-              <div className="mb-3" style={{ padding: 20 }}>
-                <label htmlFor="Dateofbirth" className="form-label">
-                  Date of birth
-                </label>
-                <input
-                  id="date"
-                  name="date"
-                  type="text"
-                  className="form-control"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.date}
-                />
-                {formik.touched.date && formik.errors.date && (
-                  <div style={{color:"red"}}>{formik.errors.date}</div>
-                )}
-              </div>
-
-              <div>
-                <p style={{ textAlign: "center", margin: 10 }}>
-                  COMPANY DETAILS
-                </p>
               </div>
 
               <div className="mb-3" style={{ padding: 20 }}>
@@ -172,78 +110,32 @@ console.log()
                   name="role"
                   type="text"
                   className="form-control"
-                  
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.role}
                 />
-               
+                 {formik.touched.role && formik.errors.role && (
+                  <div style={{ color: "red" }}>{formik.errors.role}</div>
+                )}
               </div>
               <div className="mb-3" style={{ padding: 20 }}>
                 <label htmlFor="jdate" className="form-label">
                   Join Date
                 </label>
                 <input
-                   id="jdate"
-                   name="jdate"
-                   type="text"
-                   className="form-control"
-                   onChange={formik.handleChange}
-                   onBlur={formik.handleBlur}
-                   value={formik.values.jdate}
-                 />
-              </div>
-              <div className="mb-3 " style={{ padding: 20 }}>
-                <label htmlFor="cemail" className="form-label">
-                  Email address
-                </label>
-                <input
-                   id="cemail"
-                   name="cemail"
-                   type="email"
-                   className="form-control"
-                   onChange={formik.handleChange}
-                   onBlur={formik.handleBlur}
-                   value={formik.values.cemail}
-                 
+                  id="jdate"
+                  name="jdate"
+                  type="text"
+                  className="form-control"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.jdate}
                 />
-              </div>
-              <div className="mb-3" style={{ padding: 20 }}>
-                <label htmlFor="exp" className="form-label">
-                  Experience
-                </label>
-                <input
-                 id="exp"
-                 name="exp"
-                 type="text"
-                 className="form-control"
-                 onChange={formik.handleChange}
-                 onBlur={formik.handleBlur}
-                 value={formik.values.exp}
-               />
-              </div>
-
-              {/* <div className="mb-3" style={{ padding: 20 }}>
-                <label htmlFor="password" className="form-label">
-                  Password
-                </label>
-                <input
-                 id="password"
-                 name="password"
-                 type="password"
-                 className="form-control"
-                 onChange={formik.handleChange}
-                 onBlur={formik.handleBlur}
-                 value={formik.values.password}
-               />
-                {formik.touched.password && formik.errors.password && (
-                  <div style={{color:"red"}}>{formik.errors.password}</div>
+                 {formik.touched.jdate && formik.errors.jdate && (
+                  <div style={{ color: "red" }}>{formik.errors.jdate}</div>
                 )}
-              </div> */}
+              </div>
 
-
-              {/* <button className="btn btn-success"><Link to={`/edit/${DataUpdate._id}`}  style={{textDecoration:"none",color:"white"}}>Update</Link></button> */}
-              {/* <input  style={{margin:20}}  type="Submit" value="Update"/> */}
               <button
                 type="submit"
                 className="btn btn-success m-2"
@@ -251,17 +143,17 @@ console.log()
               >
                 Update
               </button>
-             
-                <button
-                  onClick={handleDelete}
-                  type="button"
-                  className="btn btn-success"
-                  style={{ color: "white" }}
-                >
-                  Delete
-                </button>
+
+              <button
+                onClick={handleDelete}
+                type="button"
+                className="btn btn-success"
+                style={{ color: "white" }}
+              >
+                Delete
+              </button>
               {/* </Link> */}
-              </div>
+            </div>
           </form>
         </div>
       </div>

@@ -471,23 +471,19 @@ import ErrorComponent from "./ErrorComponent";
 
 export default function RegFormComponent() {
   const [serverSuccess, setServerSuccess] = useState("");
-  const[serverError,SetServeError]=useState("")
-  const [validationMsg,setvalidationMsg]=useState("")
+  const [serverError, setServeError] = useState("");
+  const [validationMsg, setvalidationMsg] = useState("");
+  const [backendError, setbackendError] = useState({});
   const initialValues = {
     name: "",
     email: "",
     phone: "",
-    place: "",
     district: "",
-    state: "",
     role: "",
-    date: "",
     jdate: "",
-    exp: "",
-    cemail: "",
   };
 
-  const handleSubmit = async (values, { resetForm }) => {
+  const handleSubmit = async (values, { setErrors, resetForm }) => {
     try {
       const response = await axios.post(
         `http://localhost:3000/api/register`,
@@ -497,31 +493,37 @@ export default function RegFormComponent() {
       console.log("Form Submitted", response.data);
 
       // setServerSuccess(response.data.success)
-      if(response.data.success){
-        setServerSuccess(true)
-      }
-      else{
-        console.log("response.data.message",response.data.message);
+      // if (response.data.success) {
+      //   setServerSuccess(true);
+      // } else {
+      //   console.log("response.data.message::", response.data.error);
+      //   setvalidationMsg(response.data.message);
+      //   SetServeError(true);
+      //   // setServerSuccess(false)
+      // }
+      if (response.data.error) {
+        setbackendError(response.data.error);
+        setErrors(response.data.error);
         setvalidationMsg(response.data.message);
-        SetServeError(true);
-        // setServerSuccess(false)
-
+        setServeError(true);
+        setServerSuccess(false);
+      } else if (response.data.success) {
+        setServerSuccess(true);
       }
       resetForm();
       // alert("Registered");
     } catch (error) {
       console.error("Not Submitted", error);
-      SetServeError(true)
-      console.log("response.data.errors",response.data.errors)
+      setServeError(true);
+      console.log("response.data.errors", response.data.errors);
     }
   };
-//  const  handleClose =()=>{
-//   serverSuccess=null;
-//  }
+  //  const  handleClose =()=>{
+  //   serverSuccess=null;
+  //  }
 
   return (
     <>
-    
       <h3 style={{ textAlign: "center", padding: 20, color: "white" }}>
         Employee Registeration Form
       </h3>
@@ -544,17 +546,10 @@ export default function RegFormComponent() {
                 .matches(/^[6-9]\d{9}$/, "Please enter valid phone number.")
                 .min(10, "Invalid phone number,it must contain 10 digit")
                 .required("Required"),
-              place: string().required(" Required"),
               district: string().required("Required"),
-              state: string().required("Required"),
-              date: string().required("Required"),
+
               role: string().required("Required"),
               jdate: string().required("Required"),
-              cemail: string().required("Required"),
-              exp: string().required("Required"),
-              password: string()
-                .required("Required")
-                .min(6, "Password is too short - should be 6 chars minimum"),
             })}
           >
             {({
@@ -571,11 +566,6 @@ export default function RegFormComponent() {
                   className="shadow-lg bg-body rounded"
                   style={{ backgroundColor: "white", opacity: 0.75 }}
                 >
-                  <div>
-                    <p style={{ textAlign: "center", margin: 10 }}>
-                      PERSONAL INFORMATION
-                    </p>
-                  </div>
                   <div className="mb-3 " style={{ padding: 20, color: "red" }}>
                     *
                     <label
@@ -596,6 +586,8 @@ export default function RegFormComponent() {
                       component="div"
                       style={{ color: "red" }}
                     />
+                    {backendError.name && <div>{backendError.name}</div>}
+                    {backendError.name_empty && <div>{backendError.name_empty}</div>}
                   </div>
                   <div className="mb-3 " style={{ padding: 20, color: "red" }}>
                     *
@@ -604,7 +596,7 @@ export default function RegFormComponent() {
                       className="form-label"
                       style={{ color: "black" }}
                     >
-                      Personal Email
+                      Email
                     </label>
                     <Field
                       type="email"
@@ -617,6 +609,10 @@ export default function RegFormComponent() {
                       component="div"
                       style={{ color: "red" }}
                     />
+                    {backendError.email_exist && <div>{backendError.email_exist}</div>}
+                    {backendError.email && <div>{backendError.email}</div>}
+                    {backendError.email_empty && <div>{backendError.email_empty}</div>}
+                    {backendError.email_invalid && <div>{backendError.email_invalid}</div>}
                   </div>
                   <div className="mb-3" style={{ padding: 20, color: "red" }}>
                     *
@@ -638,28 +634,9 @@ export default function RegFormComponent() {
                       component="div"
                       style={{ color: "red" }}
                     />
+                    {backendError.phone_empty && <div>{backendError.phone_empty}</div>}
                   </div>
-                  <div className="mb-3" style={{ padding: 20, color: "red" }}>
-                    *
-                    <label
-                      htmlFor="place"
-                      className="form-label"
-                      style={{ color: "black" }}
-                    >
-                      Place
-                    </label>
-                    <Field
-                      type="text"
-                      id="place"
-                      name="place"
-                      className="form-control"
-                    />
-                    <ErrorMessage
-                      name="place"
-                      component="div"
-                      style={{ color: "red" }}
-                    />
-                  </div>
+
                   <div className="mb-3" style={{ padding: 20, color: "red" }}>
                     *
                     <label
@@ -680,55 +657,7 @@ export default function RegFormComponent() {
                       component="div"
                       style={{ color: "red" }}
                     />
-                  </div>
-                  <div className="mb-3" style={{ padding: 20, color: "red" }}>
-                    *
-                    <label
-                      htmlFor="state"
-                      className="form-label"
-                      style={{ color: "black" }}
-                    >
-                      State
-                    </label>
-                    <Field
-                      type="text"
-                      id="state"
-                      name="state"
-                      className="form-control"
-                    />
-                    <ErrorMessage
-                      name="state"
-                      component="div"
-                      style={{ color: "red" }}
-                    />
-                  </div>
-
-                  <div className="mb-3" style={{ padding: 20, color: "red" }}>
-                    *
-                    <label
-                      htmlFor="Dateofbirth"
-                      className="form-label"
-                      style={{ color: "black" }}
-                    >
-                      Date of birth
-                    </label>
-                    <Field
-                      type="text"
-                      id="date"
-                      name="date"
-                      className="form-control"
-                    />
-                    <ErrorMessage
-                      name="date"
-                      component="div"
-                      style={{ color: "red" }}
-                    />
-                  </div>
-
-                  <div>
-                    <p style={{ textAlign: "center", margin: 10 }}>
-                      COMPANY DETAILS
-                    </p>
+                    {backendError.district_empty && <div>{backendError.district_empty}</div>}
                   </div>
 
                   <div className="mb-3" style={{ padding: 20, color: "red" }}>
@@ -751,6 +680,7 @@ export default function RegFormComponent() {
                       component="div"
                       style={{ color: "red" }}
                     />
+                    {backendError.role_empty && <div>{backendError.role_empty}</div>}
                   </div>
                   <div className="mb-3" style={{ padding: 20, color: "red" }}>
                     *
@@ -772,78 +702,22 @@ export default function RegFormComponent() {
                       component="div"
                       style={{ color: "red" }}
                     />
-                  </div>
-                  <div className="mb-3 " style={{ padding: 20, color: "red" }}>
-                    *
-                    <label
-                      htmlFor="cemail"
-                      className="form-label"
-                      style={{ color: "black" }}
-                    >
-                      Email address
-                    </label>
-                    <Field
-                      type="email"
-                      id="cemail"
-                      name="cemail"
-                      className="form-control"
-                    />
-                    <ErrorMessage
-                      name="cemail"
-                      component="div"
-                      style={{ color: "red" }}
-                    />
-                  </div>
-                  <div className="mb-3" style={{ padding: 20, color: "red" }}>
-                    *
-                    <label
-                      htmlFor="exp"
-                      className="form-label"
-                      style={{ color: "black" }}
-                    >
-                      Experience
-                    </label>
-                    <Field
-                      type="text"
-                      id="exp"
-                      name="exp"
-                      className="form-control"
-                    />
-                    <ErrorMessage
-                      name="exp"
-                      component="div"
-                      style={{ color: "red" }}
-                    />
-                  </div>
-                  <div className="mb-3" style={{ padding: 20, color: "red" }}>
-                    *
-                    <label
-                      htmlFor="password"
-                      className="form-label"
-                      style={{ color: "black" }}
-                    >
-                      Password
-                    </label>
-                    <Field
-                      type="password"
-                      id="password"
-                      name="password"
-                      className="form-control"
-                    />
-                    <ErrorMessage
-                      name="password"
-                      component="div"
-                      style={{ color: "red" }}
-                    />
+                    {backendError.jdate_empty && <div>{backendError.jadte_empty}</div>}
                   </div>
 
                   <button className="btn btn-success m-3" type="submit">
                     Submit
                   </button>
-                 
                 </div>
-                {serverSuccess && <SuccessComponent onClose={() => setServerSuccess(false)}/> }
-                {serverError && <ErrorComponent message={validationMsg} onClose={() => SetServeError("")}/> }
+                {serverSuccess && (
+                  <SuccessComponent onClose={() => setServerSuccess(false)} />
+                )}
+                {serverError && (
+                  <ErrorComponent
+                    message={validationMsg}
+                    onClose={() => setServeError("")}
+                  />
+                )}
               </Form>
             )}
           </Formik>

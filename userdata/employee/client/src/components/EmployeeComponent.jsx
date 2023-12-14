@@ -184,7 +184,7 @@
 
 
 
-// EditPage.js
+
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import EditForm from './EditForm';
@@ -203,19 +203,18 @@ const EmployeeComponent = () => {
   const [serverSuccess, setServerSuccess] = useState("");
   const [DeleteSucces,SetDeleteSuccess]=useState("");
   const [deleteError,setdeleteError]=useState("");
+  const [backendError,setbackendError]=useState({});
   const [updateError,setupdateError]=useState("");
+  const [validationMsg, setvalidationMsg] = useState("");
+ 
   const [initialData, setInitialData] = useState({
     name: "",
     email: "",
     phone: "",
-    place: "",
     district: "",
-    state: "",
     role: "",
-    date: "",
     jdate: "",
-    exp: "",
-    cemail: ""
+    
     
   });
 
@@ -227,23 +226,19 @@ const EmployeeComponent = () => {
             setInitialData(response.data.data);
             console.log(response.status, response.data.data);
             // console.log("Single employee data : ", response.data);
+       
           })
+            
           .catch((error) => {
             console.log("get eror:", error.message ? error.message : error)
     
           })
  
   }, []);
-  // const handleChange = (e) => {
-  //       console.log("Reached here")
-    
-  //       SetUpdate((pre) => {
-  //         return { ...pre, [e.target.name]: e.target.value }
-  //       })
-  //     }
 
-  const handleSubmit = values => {
-    // Handle the form submission (e.g., update data on the server)
+
+  const handleSubmit = (values)=> {
+   
     axios.put(`http://localhost:3000/api/update/${id}`, values)
           .then((response) => {
             // SetUpdate(response.data);
@@ -252,6 +247,15 @@ const EmployeeComponent = () => {
             setServerSuccess(response.data.success)
             // alert("updated")
             // setServerMessage(response.data.message);
+            if (response.data.error) {
+              setbackendError(response.data.error);
+              setErrors(response.data.error);
+              setvalidationMsg(response.data.message);
+              setupdateError(true);
+              setServerSuccess(false);
+            } else if (response.data.success) {
+              setServerSuccess(true);
+            }
           })
           .catch((error) => {
             console.log(" axios get eror:", error.message ? error.message : error)
@@ -281,11 +285,11 @@ const EmployeeComponent = () => {
   return (
     <div>
       
-      <EditForm initialValues={initialData} onSubmit={handleSubmit} onClick={handleDelete}/>
+      <EditForm initialValues={initialData} onSubmit={handleSubmit} onClick={handleDelete} backendError={backendError} />
       {serverSuccess && <SuccessUpdate onClose={() => setServerSuccess(false)}/>}
       {DeleteSucces && <SuccessDelete onClose={() => SetDeleteSuccess(false)} />}
       {deleteError && <ErrorComponent onClose={() => setdeleteError(false)} />}
-      {updateError && <ErrorComponent onClose={() => setupdateError(false)}/>}
+      {updateError && <ErrorComponent  message={validationMsg} onClose={() => setupdateError(false)}/>}
     </div>
   );
 };
