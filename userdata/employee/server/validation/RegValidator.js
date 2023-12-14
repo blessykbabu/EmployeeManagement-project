@@ -51,7 +51,7 @@ if(!validator.isEmail(data.email)){
 
 
 let email_count=await employeeSchema.countDocuments({
-    "email":data.email,
+    "email":data.email,deleted:{$ne:true}
 });
 
 if(email_count>0){

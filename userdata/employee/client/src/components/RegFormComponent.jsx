@@ -509,6 +509,7 @@ export default function RegFormComponent() {
         setServerSuccess(false);
       } else if (response.data.success) {
         setServerSuccess(true);
+        setvalidationMsg(response.data.message);
       }
       resetForm();
       // alert("Registered");
@@ -710,7 +711,7 @@ export default function RegFormComponent() {
                   </button>
                 </div>
                 {serverSuccess && (
-                  <SuccessComponent onClose={() => setServerSuccess(false)} />
+                  <SuccessComponent     message={validationMsg}  onClose={() => setServerSuccess(false)} />
                 )}
                 {serverError && (
                   <ErrorComponent

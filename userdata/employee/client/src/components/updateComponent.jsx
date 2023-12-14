@@ -90,6 +90,7 @@ function UpdateComponent() {
           setUpdate(false);
         }else if(response.data.success){
           setUpdate(true);
+          setValidationMessage(response.data.message);
         }
         resetForm();
       }catch (error) {
@@ -235,8 +236,8 @@ function UpdateComponent() {
           </form>
         </div>
       </div>
-      {update && <SuccessUpdate onClose={handleupdate}/>}
-      {deletedata &&  <SuccessDelete onClose={handledelete}/>}
+      {update && <SuccessUpdate   message={validationMessage} onClose={handleupdate}/>}
+      {deletedata &&  <SuccessDelete  message={validationMessage} onClose={handledelete}/>}
       {error && <ErrorComponent message={validationMessage} onClose={handleError}/>}
       {/* {error && !deletedata && <ErrorComponent onClose={handleError} />} */}
 

@@ -1,5 +1,5 @@
 import "./SuccessComponnetCss.css"
-const SuccessComponent = ({ onClose }) => {
+const SuccessComponent = ({ onClose,message }) => {
 
 return(
     <>
@@ -38,7 +38,8 @@ return(
   </div>
   <div id="lower-side">
     <p id="message">
-      Congratulations, your account has been successfully created.
+      {/* Congratulations, your account has been successfully created. */}
+      {message}
     </p>
     <button id="contBtn"style={{border:0}} onClick={onClose} >OK
     </button>

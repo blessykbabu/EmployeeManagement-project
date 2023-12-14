@@ -1,5 +1,5 @@
 import "./Update.css"
-const SuccessUpdate = ({ onClose }) => {
+const SuccessUpdate = ({ onClose,message}) => {
 
 return(
     <>
@@ -38,7 +38,8 @@ return(
   </div>
   <div id="lower-side">
     <p id="message">
-      Profile successfully updated
+      {/* Profile successfully updated */}
+      {message}
     </p>
     <button id="contBtnUpdate"style={{border:0}} onClick={onClose} >OK
     </button>

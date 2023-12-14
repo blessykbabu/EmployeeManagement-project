@@ -41,6 +41,7 @@ return(
     {/* <p id="message">
       Profile successfully updated
     </p> */}
+   
    <Link to="/view"> <button id="contBtnUpdate"style={{border:0}} >Close
     </button>
     </Link>
