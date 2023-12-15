@@ -83,26 +83,44 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from 'react-router-dom';
+import Loading from "./Loading";
+// import { Loadercomponnet } from "./LoaderComponnet";
 
 export default function EmployeeProfileComponent() {
   const [lists, setLists] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10); // Adjust based on your backend setup
+  const [pageSize, setPageSize] = useState(10); 
   const [totalPages, setTotalPages] = useState(0);
+  const[loading,setLoading]=useState(true)
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/api/emp-list?page=${currentPage}&pageSize=${pageSize}`)
+    try {
+      axios.get(`http://localhost:3000/api/emp-list?page=${currentPage}&pageSize=${pageSize}`)
       .then((response) => {
         setLists(response.data.data.datas);
+        console.log("total_pages",response.data.data.total_pages);
         setTotalPages(response.data.data.total_pages);
       })
       .catch((error) => {
         console.log("get error:", error.message ? error.message : error);
       });
-  }, [currentPage, pageSize]);
+    } catch (error) {
+      console.log(error)
+    }finally{
+      setTimeout(()=>{
+        setLoading(false)
+      },300)
+      
+    }
+ 
+  }, [currentPage, pageSize,loading]);
 
   return (
     <>
+    <div>
+      {loading?
+      (<Loading/>):(
+  
       <div className="listTable">
         <h2 style={{ textAlign: "center", color: "white" }}>EMPLOYEE LIST</h2>
         <div className="container">
@@ -147,9 +165,9 @@ export default function EmployeeProfileComponent() {
               {Array.from({ length: totalPages }, (_, index) => (
                 <li key={index + 1} className={`page-item ${currentPage === index + 1 ? "active" : ""}`}>
                   <Link
-                    to={`?page=${index + 1}`}
+                    // to={`?page=${index + 1}`}
                     className="page-link"
-                    onClick={() => setCurrentPage(index + 1)}
+                    onClick={() => (setCurrentPage(index + 1),setLoading(true))}
                   >
                     {index + 1}
                   </Link>
@@ -159,6 +177,9 @@ export default function EmployeeProfileComponent() {
           </nav>
         </div>
       </div>
+      )
+              }
+       </div>       
     </>
   );
 }

@@ -12,6 +12,7 @@ import LinkComponent from './components/LinkComponent'
 import EmployeeComponent from './components/EmployeeComponent';
 import MainPageComponent from './components/MainPageComponent'
 import SuccessComponent from './components/SuccessComponent'
+// import Loading from './components/Loading';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
    <MainPageComponent/>
    {/* <Employee2/> */}
    {/* <SuccessComponent/> */}
+   {/* <Loading/> */}
 
     </>
   )

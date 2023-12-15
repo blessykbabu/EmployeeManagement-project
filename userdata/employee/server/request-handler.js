@@ -69,7 +69,7 @@ export async function register(req, res) {
 
 export async function EmpList(req, res) {
   try {
-    let count=Number(await employeeSchema.countDocuments());
+    let count=Number(await employeeSchema.countDocuments({deleted: { $ne: true }}));
     const pageNumber=parseInt(req.query.page) || 1;
     const pageSize=parseInt(req.query.pageSize) || count;
     let info = await userSchema
