@@ -61,6 +61,7 @@ function UpdateComponent() {
         // setData(response.data);
       setDeletedata(response.data.success);
       
+      
       });
     } catch (error) {
       setError(true);

@@ -69,9 +69,9 @@ export async function register(req, res) {
 
 export async function EmpList(req, res) {
   try {
-    let count=Number(await employeeSchema.count());
-    const pageNumber=req.query.page || 1;
-    const pageSize=req.query.pageSize || count;
+    let count=Number(await employeeSchema.countDocuments());
+    const pageNumber=parseInt(req.query.page) || 1;
+    const pageSize=parseInt(req.query.pageSize) || count;
     let info = await userSchema
     .find({deleted: { $ne: true }})
     .sort({_id:-1})
@@ -81,10 +81,15 @@ export async function EmpList(req, res) {
     // return res.json(info);
     if (info) {
       let  total_pages=Math.ceil(count/pageSize);
-      
+      let data={
+        count:count,
+        total_pages:total_pages,
+        currentPages:pageNumber,
+        datas:info,
+      }
       let response = successFunction({
         statusCode: 200,
-        data: info,
+        data:data,
         message: "Data Recieved",
       });
       return res.status(200).send(response);
