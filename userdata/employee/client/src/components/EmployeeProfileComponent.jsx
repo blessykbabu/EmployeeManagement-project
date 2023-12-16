@@ -122,10 +122,10 @@ export default function EmployeeProfileComponent() {
       (<Loading/>):(
   
       <div className="listTable">
-        <h2 style={{ textAlign: "center", color: "white" }}>EMPLOYEE LIST</h2>
-        <div className="container">
+        <h2 style={{ textAlign: "center", color: "gray" }}>EMPLOYEE LIST</h2>
+        <div className="container ">
           <table className="table table-success table-striped">
-            {/* Your table header */}
+            {/*  table header */}
             <thead>
               <tr>
                 <th scope="col">SL No</th>
@@ -137,7 +137,7 @@ export default function EmployeeProfileComponent() {
                 <th scope="col"></th>
               </tr>
             </thead>
-            {/* Your table body */}
+            {/*  table body */}
             <tbody>
               {lists.map((list, index) => {
                 const serialNumber=(currentPage-1) * pageSize + index +1;
@@ -177,6 +177,7 @@ export default function EmployeeProfileComponent() {
           </nav>
         </div>
       </div>
+  
       )
               }
        </div>       

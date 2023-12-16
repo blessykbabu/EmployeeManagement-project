@@ -1,110 +1,135 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import SuccessUpdate from './SuccessUpdate';
-import SuccessDelete from './SuccessDelete';
-import ErrorComponent from './ErrorComponent';
+import SuccessUpdate from "./SuccessUpdate";
+import SuccessDelete from "./SuccessDelete";
+import ErrorComponent from "./ErrorComponent";
+import Loading from "./Loading";
 
 function UpdateComponent() {
   const { id } = useParams("");
-  
-  const [editData, setEditData] = useState({});
-  const [update,setUpdate] =useState(null);
-  const [deletedata,setDeletedata]=useState(false);
-  const [error,setError] = useState(false);
-  
-  const [validationMessage,setValidationMessage]=useState();
-  const [backendErrors,setBackendErrors] = useState({})
 
+  const [editData, setEditData] = useState({});
+  const [update, setUpdate] = useState(null);
+  const [deletedata, setDeletedata] = useState(false);
+  const [error, setError] = useState(false);
+
+  const [validationMessage, setValidationMessage] = useState();
+  const [backendErrors, setBackendErrors] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getDetails();
-  }, []);
+  }, [loading]);
 
-  const handleupdate=()=>{
+  const handleupdate = () => {
     setUpdate(false);
-  }
-  const handledelete=()=>{
+  };
+  const handledelete = () => {
+    
     setDeletedata(false);
-  }
-  const handleError=()=>{
+  };
+  const handleError = () => {
     setError(false);
-  }
+  };
   const getDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/get-employee/${id}`);
-      formik.setValues(response.data.data)
+      const response = await axios.get(
+        `http://localhost:3000/api/get-employee/${id}`
+      );
+      formik.setValues(response.data.data);
       setEditData(response.data.data);
       // setSuccess(response.data.success);
     } catch (error) {
       console.error("Error fetching user details:", error);
       setError(true);
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
     }
   };
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().min(2, "Too Short!").max(50, "Too Long!").required("Required"),
+    name: Yup.string()
+      .min(2, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Required"),
     email: Yup.string().email("Invalid email").required("Required"),
     district: Yup.string().min(2, "Invalid Address").required("Required"),
     jdate: Yup.string().required("Required"),
     role: Yup.string().required("Required"),
-    phone: Yup.string().matches(/^[6-9]\d{9}$/, "Please enter a valid phone number.").required("Required"),
+    phone: Yup.string()
+      .matches(/^[6-9]\d{9}$/, "Please enter a valid phone number.")
+      .required("Required"),
   });
   const onDelete = async () => {
     try {
+      setLoading(true)
       axios
-      .delete(`http://localhost:3000/api/delete/${id}`)
-      .then((response) => {
-        // setData(response.data);
-      setDeletedata(response.data.success);
-      
-      
-      });
+        .delete(`http://localhost:3000/api/delete/${id}`)
+        .then((response) => {
+          // setData(response.data);
+          setDeletedata(response.data.success);
+          console.log("response.data.success:",response.data.success)
+        });
     } catch (error) {
       setError(true);
-      console.log("Error in delete",error)
+      console.log("Error in delete", error);
+    }finally{
+      setTimeout(()=>{
+        setLoading(false)
+      },2000)
     }
-    
   };
   const formik = useFormik({
     initialValues: {
-      name: editData.name || '',
-      email: editData.email || '',
-      phone: editData.phone || '',
-      district: editData.district || '',
-      role:editData.role || '',
-      jdate: editData.jdate || '',
+      name: editData.name || "",
+      email: editData.email || "",
+      phone: editData.phone || "",
+      district: editData.district || "",
+      role: editData.role || "",
+      jdate: editData.jdate || "",
     },
     validationSchema,
     onSubmit: async (values, { setErrors, resetForm }) => {
       try {
-        const response = await axios.put(`http://localhost:3000/api/update/${id}`, values);
+        setLoading(true)
+        const response = await axios.put(
+          `http://localhost:3000/api/update/${id}`,
+          values
+        );
         console.log("Form Submitted", response.data.data);
-        if(response.data.errors){
+        if (response.data.errors) {
           setBackendErrors(response.data.errors);
-          setErrors(response.data.errors); 
+          setErrors(response.data.errors);
           setValidationMessage(response.data.message);
           setError(true);
           setUpdate(false);
-        }else if(response.data.success){
+        } else if (response.data.success) {
           setUpdate(true);
           setValidationMessage(response.data.message);
         }
         resetForm();
-      }catch (error) {
+      } catch (error) {
         console.error("Error submitting form:", error);
         setError(true);
+      }finally{
+        setTimeout(()=>{
+          setLoading(false)
+        },2000)
       }
     },
   });
 
-
   return (
     <>
-    <h3 style={{ textAlign: "center", padding: 20, color: "white" }}>
+    <div>
+      {loading?(<Loading/>):(
+        <div>
+      <h3 style={{ textAlign: "center", padding: 20, color: "white" }}>
         {/* Details of {initialValues.name} */}
       </h3>
       <div className="regfrm">
@@ -112,8 +137,7 @@ function UpdateComponent() {
           <form onSubmit={formik.handleSubmit}>
             <div
               className="shadow-lg bg-body rounded"
-              style={{ backgroundColor: "white", opacity: 0.75 }}
-            >
+              style={{ backgroundColor: "white", opacity: 0.75 }}>
               <div className="mb-3 " style={{ padding: 20 }}>
                 <label htmlFor="name" className="form-label">
                   Name
@@ -125,10 +149,12 @@ function UpdateComponent() {
                   className="form-control"
                   {...formik.getFieldProps("name")}
                 />
-                 {formik.touched.name && formik.errors.name && (
+                {formik.touched.name && formik.errors.name && (
                   <div style={{ color: "red" }}>{formik.errors.name}</div>
                 )}
-                {backendErrors.name_empty && <div>{backendErrors.name_empty}</div>}
+                {backendErrors.name_empty && (
+                  <div>{backendErrors.name_empty}</div>
+                )}
                 {backendErrors.name && <div>{backendErrors.name}</div>}
               </div>
               <div className="mb-3 " style={{ padding: 20 }}>
@@ -140,15 +166,17 @@ function UpdateComponent() {
                   name="email"
                   type="email"
                   className="form-control"
-                  {...formik.getFieldProps("email")} 
+                  {...formik.getFieldProps("email")}
                 />
                 {formik.touched.email && formik.errors.email && (
                   <div style={{ color: "red" }}>{formik.errors.email}</div>
                 )}
-                {/* {backendErrors.email_empty && <div>{backendErrors.email_empty}</div>} */}
-              {/* {backendErrors.email && <div>{backendErrors.email}</div>} */}
-              {/* {backendErrors.email_invalid && <div>{backendErrors.email_invalid}</div>} */}
-              {backendErrors.email_exist && <div>{backendErrors.email_exist}</div>}
+                {backendErrors.email_empty && <div>{backendErrors.email_empty}</div>}
+                {backendErrors.email && <div>{backendErrors.email}</div>}
+                {backendErrors.email_invalid && <div>{backendErrors.email_invalid}</div>}
+                {backendErrors.email_exist && (
+                  <div>{backendErrors.email_exist}</div>
+                )}
               </div>
               <div className="mb-3" style={{ padding: 20 }}>
                 <label htmlFor="phone" className="form-label">
@@ -193,7 +221,7 @@ function UpdateComponent() {
                   className="form-control"
                   {...formik.getFieldProps("role")}
                 />
-                 {formik.touched.role && formik.errors.role && (
+                {formik.touched.role && formik.errors.role && (
                   <div style={{ color: "red" }}>{formik.errors.role}</div>
                 )}
               </div>
@@ -208,7 +236,7 @@ function UpdateComponent() {
                   className="form-control"
                   {...formik.getFieldProps("jdate")}
                 />
-                 {formik.touched.jdate && formik.errors.jdate && (
+                {formik.touched.jdate && formik.errors.jdate && (
                   <div style={{ color: "red" }}>{formik.errors.jdate}</div>
                 )}
               </div>
@@ -222,7 +250,7 @@ function UpdateComponent() {
               </button>
 
               <button
-               onClick={onDelete}
+                onClick={onDelete}
                 type="button"
                 className="btn btn-success"
                 style={{ color: "white" }}
@@ -237,11 +265,20 @@ function UpdateComponent() {
           </form>
         </div>
       </div>
-      {update && <SuccessUpdate   message={validationMessage} onClose={handleupdate}/>}
-      {deletedata &&  <SuccessDelete  message={validationMessage} onClose={handledelete}/>}
-      {error && <ErrorComponent message={validationMessage} onClose={handleError}/>}
+      </div>
+      )
+      }
+      </div>
+      {update && (
+        <SuccessUpdate message={validationMessage} onClose={handleupdate} />
+      )}
+      {deletedata && (
+        <SuccessDelete message={validationMessage} onClose={handledelete} />
+      )}
+      {error && (
+        <ErrorComponent message={validationMessage} onClose={handleError} />
+      )}
       {/* {error && !deletedata && <ErrorComponent onClose={handleError} />} */}
-
     </>
   );
 }

@@ -7,6 +7,8 @@ import EmployeeComponent from './EmployeeComponent';
 import EmployeeProfileComponent from './EmployeeProfileComponent';
 import UpdateComponent from './updateComponent';
 
+import AdminLogin from './AdminLogin';
+
 
 export default function  MainPageComponent(){
 return(
@@ -14,6 +16,7 @@ return(
 <Router>
  <Routes>
              <Route path='/' element={<LinkComponent/>}/>
+             <Route exact path='/login' element={<AdminLogin/>}/>
             <Route exact path='/registration' element={<RegFormComponent/>}/>
             <Route path='/view' element={<EmployeeProfileComponent/>}/>
             <Route path='/profile/:id' element={<UpdateComponent/>}/>
