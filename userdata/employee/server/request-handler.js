@@ -1,5 +1,8 @@
-import employeeSchema from "./model/employee.schema.js";
-import userSchema from "./model/employee.schema.js";
+// import employeeSchema from "./seeders/model/employee.schema.js";
+// import employeeSchema from "./seeders/model/employee.schema.js";
+
+import employeeSchema from "./db/model/employee.schema.js";
+
 import { successFunction } from "./utils/response-handler.js";
 import { errorFunction } from "./utils/response-handler.js";
 import { Regvalidator } from "./validation/RegValidator.js";
@@ -17,7 +20,7 @@ export async function register(req, res) {
       console.log("valiadtionResult::", validationResult);
    if (validationResult.isValid) {
       // let hashedPass = await bcrypt.hash(password, 10);
-      let userExist = await userSchema.findOne({ $and: [{ email: email }, { deleted: { $ne: true } }],
+      let userExist = await employeeSchema.findOne({ $and: [{ email: email }, { deleted: { $ne: true } }],
       });
       if (userExist) {
          let response = errorFunction({
@@ -26,7 +29,7 @@ export async function register(req, res) {
         });
         return res.status(401).send(response);
       }
-      let result = await userSchema.create({name,email,phone,district, role, jdate,});
+      let result = await employeeSchema.create({name,email,phone,district, role, jdate,});
           if (result) {
              let response = successFunction({
              statusCode: 200,
@@ -72,7 +75,7 @@ export async function EmpList(req, res) {
     let count=Number(await employeeSchema.countDocuments({deleted: { $ne: true }}));
     const pageNumber=parseInt(req.query.page) || 1;
     const pageSize=parseInt(req.query.pageSize) || count;
-    let info = await userSchema
+    let info = await employeeSchema
     .find({deleted: { $ne: true }})
     .sort({_id:-1})
     .skip(pageSize * (pageNumber - 1))
@@ -119,8 +122,8 @@ export async function getEmployee(req, res) {
 
     let id = req.params.id;
     // console.log(id);
-    // let result=await userSchema.findOne({_id : id}, deleted:{$ne:true});
-    let result = await userSchema
+    // let result=await employeeSchema.findOne({_id : id}, deleted:{$ne:true});
+    let result = await employeeSchema
       .findOne({
         $and: [{ _id: id }, { deleted: { $ne: true } }],
       })
@@ -207,7 +210,7 @@ export async function update(req,res){
 // export async function update(req, res) {
 //   try {
 //     const { id } = req.params;
-//     let user = await userSchema.findOne({ _id: id, deleted: { $ne: true } });
+//     let user = await employeeSchema.findOne({ _id: id, deleted: { $ne: true } });
 //     if (!user) {
 //       //   return res.status(401).send("User not exist");
 //       let response = errorFunction({
@@ -222,7 +225,7 @@ export async function update(req,res){
 //     let updateValiadationResult = await updateValidator(req.body);
 //     console.log("updateValiadationResult::", updateValiadationResult);
 //     if (updateValiadationResult.isValid) {
-//       const result = await userSchema.updateOne({ _id: id,deleted:{$ne:true}},{
+//       const result = await employeeSchema.updateOne({ _id: id,deleted:{$ne:true}},{
 //           $set: {
 //             name,
 //             email,
@@ -256,7 +259,7 @@ export async function Delete(req, res) {
   try {
     console.log("rechead here");
     const { id } = req.params;
-    let user = await userSchema.findOne({ _id: id, deleted: { $ne: true } });
+    let user = await employeeSchema.findOne({ _id: id, deleted: { $ne: true } });
     if (!user) {
       //   return res.status(401).send("User not exist");
       let response = errorFunction({
@@ -264,12 +267,12 @@ export async function Delete(req, res) {
         message: "User not exist",
       });
       return res.status(401).send(response);
-    }
-    const result = await userSchema.updateOne(
+    }else{
+    const result = await employeeSchema.updateOne(
       { _id: id },
       { $set: { deleted: true, deletedAt: new Date() } }
     );
-    // const result=await userSchema.deleteOne({_id:id});
+    // const result=await employeeSchema.deleteOne({_id:id});
     // return res.json(result);
     let response = successFunction({
       statusCode: 200,
@@ -277,7 +280,8 @@ export async function Delete(req, res) {
       message: "Deleted",
     });
     return res.status(200).send(response);
-  } catch (error) {
+  }
+ } catch (error) {
     console.log(error);
     // return res.status(500).send("error occured");
     let response = errorFunction({
@@ -286,6 +290,7 @@ export async function Delete(req, res) {
     });
     return res.status(500).send(response);
   }
+
 }
 
 // export async function login(req, res) {
@@ -294,7 +299,7 @@ export async function Delete(req, res) {
 //         // if( username.length < 4 && password.length < 4) {
 //         //     return res.json("Invalid username or password");
 //         // }
-//         let user = await userSchema.findOne({ name });
+//         let user = await employeeSchema.findOne({ name });
 //         if(!user) {
 //             return res.status(403).send("Invalid username or password");
 //         }
@@ -322,7 +327,7 @@ export async function Delete(req, res) {
 
 // export async function  getAll(req,res){
 //     try {
-//         let info=await userSchema.find();
+//         let info=await employeeSchema.find();
 //         return res.json(info)
 //     } catch (error) {
 //         console.log(error)

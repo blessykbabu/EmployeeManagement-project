@@ -115,6 +115,7 @@ function UpdateComponent() {
         resetForm();
       } catch (error) {
         console.error("Error submitting form:", error);
+        console.log("reached catch")
         setError(true);
       }finally{
         setTimeout(()=>{
@@ -275,10 +276,10 @@ function UpdateComponent() {
       {deletedata && (
         <SuccessDelete message={validationMessage} onClose={handledelete} />
       )}
-      {error && (
+      {error &&  !deletedata &&(
         <ErrorComponent message={validationMessage} onClose={handleError} />
       )}
-      {/* {error && !deletedata && <ErrorComponent onClose={handleError} />} */}
+      
     </>
   );
 }

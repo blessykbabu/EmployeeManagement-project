@@ -1,6 +1,6 @@
 import isEmpty from "./isEmpty.js";
 import validator from "validator";
-import employeeSchema from "../model/employee.schema.js";
+import employeeSchema from "../db/model/employee.schema.js";
 export async function updateValidator(data){
 const errors={}
 data.name=!isEmpty(data.name)?data.name:"";
