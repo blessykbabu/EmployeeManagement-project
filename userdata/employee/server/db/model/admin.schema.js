@@ -1,19 +1,69 @@
+// import mongoose from "mongoose";
+
+// const schema = new mongoose.Schema({
+   
+//     email: {
+//         type: String,
+//         required: true,
+       
+//     },
+  
+//     password: {
+//         type: String,
+//         required: true,
+        
+//     },
+// }
+// );
+
+// export default mongoose.model.admins || mongoose.model("admin", schema);
 import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
-   
+    name: {
+        type: String,
+        required: true,
+        
+    },
     email: {
         type: String,
         required: true,
        
     },
   
-    password: {
+    phone: {
         type: String,
-        required: true,
-        
+        required: true
     },
+
+     
+
+    district:{
+      type:String
+  },
+
+
+
+role:{
+  type:String
+},
+
+
+
+jdate:{
+  type:String
+},
+
+
+deleted:{
+  type:Boolean,
+  default:false, 
+},
+deletedAt:{
+  type:Date
 }
-);
+},{
+  timestamps:true
+});
 
 export default mongoose.model.admins || mongoose.model("admin", schema);

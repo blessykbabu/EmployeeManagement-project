@@ -129,7 +129,7 @@ export async function getEmployee(req, res) {
       })
       .select("-password");
 
-    console.log("result", result);
+    console.log("result in get employee", result);
     if (result) {
       //   return res.json(result);
 
@@ -141,10 +141,10 @@ export async function getEmployee(req, res) {
       return res.status(200).send(response);
     } else {
       let response = errorFunction({
-        statusCode: 400,
+        statusCode: 404,
         message: "user not found",
       });
-      return res.status(400).send(response);
+      return res.status(404).send(response);
     }
 
     // return res.status(200).send({ msg: "upload profile data" });
@@ -153,10 +153,10 @@ export async function getEmployee(req, res) {
     // return res.status(500).send("Error occured");
 
     let response = errorFunction({
-      statusCode: 500,
-      message: "Error occured",
+      statusCode: 404,
+      message: "User not found",
     });
-    return res.status(400).send(response);
+    return res.status(404).send(response);
   }
 }
 
@@ -166,10 +166,10 @@ export async function update(req,res){
   try {
       console.log("reached update api");
       const {id} =req.params;
-      let userExist = await employeeSchema.findOne({_id:id,deleted:{$ne:true}});
-      if(!userExist){
-          return res.status(400).send("User Not Found")
-      }
+      // let userExist = await employeeSchema.findOne({ $and: [{ _id: id }, { deleted: { $ne: true } }]});
+      // if(!userExist){
+      //     return res.status(400).send("User Not Found")
+      // }
       const {name,
         email,
         phone,

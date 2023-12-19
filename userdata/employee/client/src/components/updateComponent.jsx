@@ -3,10 +3,11 @@ import { useParams, Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import SuccessUpdate from "./SuccessUpdate";
-import SuccessDelete from "./SuccessDelete";
+// import SuccessUpdate from "./SuccessUpdate";
+// import SuccessDelete from "./SuccessDelete";
 import ErrorComponent from "./ErrorComponent";
 import Loading from "./Loading";
+import SuccessComponent from "./SuccessComponent";
 
 function UpdateComponent() {
   const { id } = useParams("");
@@ -26,6 +27,7 @@ function UpdateComponent() {
 
   const handleupdate = () => {
     setUpdate(false);
+    setLoading(true);
   };
   const handledelete = () => {
     
@@ -36,19 +38,44 @@ function UpdateComponent() {
   };
   const getDetails = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:3000/api/get-employee/${id}`
-      );
+      const response = await axios.get(`http://localhost:3000/api/get-employee/${id}`);
       formik.setValues(response.data.data);
       setEditData(response.data.data);
-      // setSuccess(response.data.success);
     } catch (error) {
-      console.error("Error fetching user details:", error);
-      setError(true);
+      if (error.response && error.response.status === 404) {
+        // User not found error
+        console.log("User not found");
+        setDeletedata(true); // Set deletedata to true to indicate user deletion
+      } else {
+        // Other types of errors
+        console.error("Error fetching user details:", error);
+        setError(true);
+      }
     } finally {
       setTimeout(() => {
         setLoading(false);
-      }, 500);
+      }, 300);
+    }
+  };
+  
+  const onDelete = async () => {
+    setLoading(true)
+    try {
+      const response = await axios.delete(`http://localhost:3000/api/delete/${id}`);
+      if (response.data.success) {
+        setDeletedata(true); // Set deletedata to true upon successful deletion
+        setValidationMessage(response.data.message);
+      } else {
+        setError(true); // Set error in case of deletion failure
+      }
+      setUpdate(false);
+    } catch (error) {
+      setError(true); // Set error in case of request failure
+      console.log("Error in delete", error);
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 300);
     }
   };
 
@@ -65,25 +92,25 @@ function UpdateComponent() {
       .matches(/^[6-9]\d{9}$/, "Please enter a valid phone number.")
       .required("Required"),
   });
-  const onDelete = async () => {
-    try {
-      setLoading(true)
-      axios
-        .delete(`http://localhost:3000/api/delete/${id}`)
-        .then((response) => {
-          // setData(response.data);
-          setDeletedata(response.data.success);
-          console.log("response.data.success:",response.data.success)
-        });
-    } catch (error) {
-      setError(true);
-      console.log("Error in delete", error);
-    }finally{
-      setTimeout(()=>{
-        setLoading(false)
-      },2000)
-    }
-  };
+  // const onDelete = async () => {
+  //   try {
+  //     setLoading(true)
+  //     axios
+  //       .delete(`http://localhost:3000/api/delete/${id}`)
+  //       .then((response) => {
+  //         // setData(response.data);
+  //         setDeletedata(response.data.success);
+  //         console.log("response.data.success:",response.data.success)
+  //       });
+  //   } catch (error) {
+  //     setError(true);
+  //     console.log("Error in delete", error);
+  //   }finally{
+  //     setTimeout(()=>{
+  //       setLoading(false)
+  //     },500)
+  //   }
+  // };
   const formik = useFormik({
     initialValues: {
       name: editData.name || "",
@@ -271,12 +298,12 @@ function UpdateComponent() {
       }
       </div>
       {update && (
-        <SuccessUpdate message={validationMessage} onClose={handleupdate} />
+        <SuccessComponent message={validationMessage} onClose={handleupdate} />
       )}
       {deletedata && (
-        <SuccessDelete message={validationMessage} onClose={handledelete} />
+        <SuccessComponent message={validationMessage} onClose={handledelete} />
       )}
-      {error &&  !deletedata &&(
+      {error && (
         <ErrorComponent message={validationMessage} onClose={handleError} />
       )}
       
