@@ -1,7 +1,7 @@
 // import employeeSchema from "./seeders/model/employee.schema.js";
 // import employeeSchema from "./seeders/model/employee.schema.js";
 
-import employeeSchema from "./db/model/employee.schema.js";
+import employeeSchema from "./db/models/employee.schema.js";
 
 import { successFunction } from "./utils/response-handler.js";
 import { errorFunction } from "./utils/response-handler.js";

@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 // import SuccessUpdate from "./SuccessUpdate";
-// import SuccessDelete from "./SuccessDelete";
+import SuccessDelete from "./SuccessDelete";
 import ErrorComponent from "./ErrorComponent";
 import Loading from "./Loading";
 import SuccessComponent from "./SuccessComponent";
@@ -301,7 +301,7 @@ function UpdateComponent() {
         <SuccessComponent message={validationMessage} onClose={handleupdate} />
       )}
       {deletedata && (
-        <SuccessComponent message={validationMessage} onClose={handledelete} />
+        <SuccessDelete message={validationMessage} onClose={handledelete} />
       )}
       {error && (
         <ErrorComponent message={validationMessage} onClose={handleError} />

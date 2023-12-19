@@ -1,5 +1,5 @@
 import isEmpty from "./isEmpty.js";
-import employeeSchema from "../db/model/employee.schema.js";
+import employeeSchema from "../db/models/employee.schema.js";
 import validator from "validator";
 
 
