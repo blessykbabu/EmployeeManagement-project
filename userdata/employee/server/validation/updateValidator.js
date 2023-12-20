@@ -2,7 +2,7 @@
 // import validator from "validator";
 const isEmpty=require('../validation/isEmpty.js');
 const validator=require('validator');
-const employeeSchema=require('../db/models/employee.schema')
+const employeeSchema=require('../db/models/users.js')
 
 // import employeeSchema from "../db/models/employee.schema.js";
 async function updateValidator(data){

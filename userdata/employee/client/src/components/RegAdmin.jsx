@@ -76,7 +76,7 @@ export default function RegAdmin() {
         ) : (
           <div>
             <h3 style={{ textAlign: "center", padding: 20, color: "gray" }}>
-              Employee Registeration Form
+              Registeration Form
             </h3>
             <div className="regfrm">
               <div className="container mx-auto col-sm-12 col-md-12 col-lg-5">

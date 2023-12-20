@@ -1,7 +1,7 @@
 // import isEmpty from "./isEmpty.js";
 // import employeeSchema from "../db/models/employee.schema.js";
 // import validator from "validator";
-const employeeSchema=require('../db/models/employee.schema')
+const employeeSchema=require('../db/models/users.js')
 const isEmpty=require('./isEmpty.js');
 const validator=require('validator');
  async function Regvalidator(data){

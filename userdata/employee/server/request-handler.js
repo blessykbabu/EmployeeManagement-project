@@ -2,7 +2,9 @@
 // import employeeSchema from "./seeders/model/employee.schema.js";
 
 // import employeeSchema from "./db/models/employee.schema.js";
-const employeeSchema=require('./db/models/employee.schema.js');
+const employeeSchema=require('./db/models/users.js');
+const usertypes=require("./db/models/usertype.schema.js")
+
 // const successFunction=require('./utils/response-handler.js');
 // const errorFunction=require('./utils/response-handler.js');
 const { successFunction, errorFunction } = require('./utils/response-handler.js');
