@@ -1,11 +1,11 @@
-module.export=
+module.exports=
 {
   "development": {
     "database": {
       "url": process.env.MONGO_URL,
       "options": {
         "useNewUrlParser": true,
-        "dbName":process.env.dbName
+        "dbName":process.env.DB_NAME
       }
     }
   },
@@ -14,16 +14,16 @@ module.export=
       "url": process.env.MONGO_URL,
       "options": {
         "useNewUrlParser": true,
-        "dbName":process.env.dbName
+        "dbName":process.env.DB_NAME
       }
     }
   },
   "production": {
     "database": {
-    
+      "url": process.env.MONGO_URL,
       "options": {
         "useNewUrlParser": true,
-        "dbName":process.env.dbName
+        "dbName":process.env.DB_NAME
       }
     }
   }

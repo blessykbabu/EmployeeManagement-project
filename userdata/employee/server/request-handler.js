@@ -1,19 +1,26 @@
 // import employeeSchema from "./seeders/model/employee.schema.js";
 // import employeeSchema from "./seeders/model/employee.schema.js";
 
-import employeeSchema from "./db/models/employee.schema.js";
+// import employeeSchema from "./db/models/employee.schema.js";
+const employeeSchema=require('./db/models/employee.schema.js');
+// const successFunction=require('./utils/response-handler.js');
+// const errorFunction=require('./utils/response-handler.js');
+const { successFunction, errorFunction } = require('./utils/response-handler.js');
 
-import { successFunction } from "./utils/response-handler.js";
-import { errorFunction } from "./utils/response-handler.js";
-import { Regvalidator } from "./validation/RegValidator.js";
+const Regvalidator=require('./validation/RegValidator.js');
+const updateValidator=require('./validation/updateValidator.js')
+// import { successFunction } from "./utils/response-handler.js";
+// import { errorFunction } from "./utils/response-handler.js";
+// import { Regvalidator } from "./validation/RegValidator.js";
+
 // import bcrypt from "bcrypt";
 // import jwt from "jsonwebtoken";
 // const { sign } = jwt;
-import { updateValidator } from "./validation/updateValidator.js";
+// import { updateValidator } from "./validation/updateValidator.js";
 
 // **********For registration**********************
 
-export async function register(req, res) {
+ async function register(req, res) {
    try {
       let { name, email, phone, district, role, jdate } = req.body;
       let validationResult = await Regvalidator(req.body);
@@ -70,7 +77,7 @@ export async function register(req, res) {
 
 // ********************* for listing employees****************
 
-export async function EmpList(req, res) {
+ async function EmpList(req, res) {
   try {
     let count=Number(await employeeSchema.countDocuments({deleted: { $ne: true }}));
     const pageNumber=parseInt(req.query.page) || 1;
@@ -116,7 +123,7 @@ export async function EmpList(req, res) {
 
 // *****************for employee profile***************
 
-export async function getEmployee(req, res) {
+ async function getEmployee(req, res) {
   try {
     
 
@@ -162,7 +169,7 @@ export async function getEmployee(req, res) {
 
 // ***************for update employee profile************
 
-export async function update(req,res){
+ async function update(req,res){
   try {
       console.log("reached update api");
       const {id} =req.params;
@@ -255,7 +262,7 @@ export async function update(req,res){
 // }
 // **********for delete employee profile******************
 
-export async function Delete(req, res) {
+ async function Delete(req, res) {
   try {
     console.log("rechead here");
     const { id } = req.params;
@@ -292,6 +299,14 @@ export async function Delete(req, res) {
   }
 
 }
+
+module.exports = {
+  register,
+  EmpList,
+  getEmployee,
+  update,
+  Delete,
+};
 
 // export async function login(req, res) {
 //     try {

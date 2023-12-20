@@ -17,4 +17,4 @@ function isEmpty(value) {
         (typeof(value)==="Array" && Object.keys(value).length===0) ||  
         (typeof(value)==="string" && value.trim().length===0);
     }
-    export default isEmpty;
+module.exports= isEmpty;

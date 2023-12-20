@@ -1,7 +1,11 @@
-import isEmpty from "./isEmpty.js";
-import validator from "validator";
-import employeeSchema from "../db/models/employee.schema.js";
-export async function updateValidator(data){
+// import isEmpty from "./isEmpty.js";
+// import validator from "validator";
+const isEmpty=require('../validation/isEmpty.js');
+const validator=require('validator');
+const employeeSchema=require('../db/models/employee.schema')
+
+// import employeeSchema from "../db/models/employee.schema.js";
+async function updateValidator(data){
 const errors={}
 data.name=!isEmpty(data.name)?data.name:"";
 data.email=!isEmpty(data.email)?data.email:"";
@@ -97,5 +101,6 @@ return{
     isValid:isEmpty(errors),
 };
 }
+module.exports=updateValidator;
 
 

@@ -1,50 +1,112 @@
-import mongoose from "mongoose";
-
-const schema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
+// // import mongoose from "mongoose";
+// const mongoose=require('mongoose');
+// const schema = new mongoose.Schema({
+//     name: {
+//         type: String,
+//         required: true,
         
-    },
-    email: {
-        type: String,
-        required: true,
+//     },
+//     email: {
+//         type: String,
+//         required: true,
        
-    },
+//     },
   
-    phone: {
-        type: String,
-        required: true
-    },
+//     phone: {
+//         type: String,
+//         required: true
+//     },
 
      
 
-    district:{
-      type:String
-  },
+//     district:{
+//       type:String
+//   },
 
 
 
-role:{
-  type:String
-},
+// role:{
+//   type:String
+// },
 
 
 
-jdate:{
-  type:String
-},
+// jdate:{
+//   type:String
+// },
 
 
-deleted:{
-  type:Boolean,
-  default:false, 
-},
-deletedAt:{
-  type:Date
+// deleted:{
+//   type:Boolean,
+//   default:false, 
+// },
+// deletedAt:{
+//   type:Date
+// }
+// },{
+//   timestamps:true
+// });
+
+// module.exports= mongoose.model.employees || mongoose.model("employee", schema);
+const mongoose = require('mongoose');
+
+let employees;
+
+try {
+  // Try to retrieve the existing model to prevent redefining it
+  employees = mongoose.model('employees');
+} catch {
+  // Define the model if it doesn't exist
+  const schema = new mongoose.Schema({
+    name: {
+              type: String,
+              required: true,
+              
+          },
+          email: {
+              type: String,
+              required: true,
+             
+          },
+        
+          phone: {
+              type: String,
+              required: true
+          },
+      
+           
+      
+          district:{
+            type:String
+        },
+      
+      
+      
+      role:{
+        type:String
+      },
+      
+      
+      
+      jdate:{
+        type:String
+      },
+      
+      
+      deleted:{
+        type:Boolean,
+        default:false, 
+      },
+      deletedAt:{
+        type:Date
+      }
+      },{
+        timestamps:true
+  }, {
+    timestamps: true,
+  });
+
+  employees = mongoose.model('employees', schema);
 }
-},{
-  timestamps:true
-});
 
-export default mongoose.model.employees || mongoose.model("employee", schema);
+module.exports = employees;

@@ -1,4 +1,4 @@
-export function successFunction(apiParameter) {
+ function successFunction(apiParameter) {
   let response = {
     success: true,
     statusCode:apiParameter.statusCode,
@@ -8,7 +8,7 @@ export function successFunction(apiParameter) {
   };
   return response
 }
-export function errorFunction(apiParameter) {
+ function errorFunction(apiParameter) {
   let response = {
     success: false,
     statusCode: apiParameter.statusCode,
@@ -16,4 +16,8 @@ export function errorFunction(apiParameter) {
     message: apiParameter.message ? apiParameter.message : null
   };
   return response
+}
+module.exports={
+  successFunction,
+  errorFunction
 }

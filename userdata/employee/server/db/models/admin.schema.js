@@ -17,7 +17,7 @@
 // );
 
 // export default mongoose.model.admins || mongoose.model("admin", schema);
-import mongoose from "mongoose";
+const mongoose=require('mongoose');
 
 const schema = new mongoose.Schema({
     name: {
@@ -66,4 +66,4 @@ deletedAt:{
   timestamps:true
 });
 
-export default mongoose.model.admins || mongoose.model("admin", schema);
+module.exports= mongoose.model.admins || mongoose.model("admin", schema);

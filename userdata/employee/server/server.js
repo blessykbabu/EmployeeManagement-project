@@ -1,9 +1,12 @@
-import express from "express";
-import dotenv from "dotenv";
-
-import conn from "./db/config.js";
-import router from  "./router.js";
-import cors from 'cors'
+// import express from "express";
+// import dotenv from "dotenv";
+const express=require('express');
+const dotenv=require('dotenv');
+const conn=require('./db/config.js');
+// import router from  "./router.js";
+const router=require('./router.js');
+// import cors from 'cors'
+const cors=require('cors');
 dotenv.config();
 
 const app = express();
