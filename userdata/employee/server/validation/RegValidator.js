@@ -1,7 +1,7 @@
 // import isEmpty from "./isEmpty.js";
-// import employeeSchema from "../db/models/employee.schema.js";
+// import users from "../db/models/employee.schema.js";
 // import validator from "validator";
-const employeeSchema=require('../db/models/users.js')
+const users=require('../db/models/users.js')
 const isEmpty=require('./isEmpty.js');
 const validator=require('validator');
  async function Regvalidator(data){
@@ -51,7 +51,7 @@ if(!validator.isEmail(data.email)){
 
 
 
-let email_count=await employeeSchema.countDocuments({
+let email_count=await users.countDocuments({
     "email":data.email,deleted:{$ne:true}
 });
 

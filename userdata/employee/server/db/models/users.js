@@ -27,12 +27,13 @@ const users = new mongoose.Schema(
     jdate: {
       type: String,
     },
-
-    usertype: { type: mongoose.Schema.Types.ObjectId, ref: "usertypes" },
-
-    passsword: {
-      type: String,
+    password: {
+      type: String
     },
+    usertype: { 
+      type: mongoose.Schema.Types.ObjectId,
+       ref: "usertypes",
+       },
     deleted: {
       type: Boolean,
       default: false,

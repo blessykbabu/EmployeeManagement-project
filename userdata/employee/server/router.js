@@ -19,7 +19,7 @@
 
 const { Router } = require("express");
 const rh = require("./request-handler.js");
-
+const auth=require('./middleware/auth.js')
 const router = Router();
 
 router.route("/register").post(rh.register);
@@ -29,5 +29,6 @@ router.route("/get-employee/:id").get(rh.getEmployee);
 router.route("/emp-list").get(rh.EmpList);
 router.route("/update/:id").put(rh.update);
 router.route("/delete/:id").delete(rh.Delete);
+router.route("/admin_login").post(rh.admin_Login);
 
 module.exports = router;

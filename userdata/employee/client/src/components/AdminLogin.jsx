@@ -42,7 +42,7 @@ import axios from "axios";
 // import ErrorComponent from "./ErrorComponent";
 // import Loading from "./Loading";
 
-export default function RegFormComponent() {
+export default function AdminLogin() {
   const [serverSuccess, setServerSuccess] = useState("");
   const [serverError, setServeError] = useState("");
   const [validationMsg, setvalidationMsg] = useState("");
@@ -56,12 +56,10 @@ export default function RegFormComponent() {
 
   const handleSubmit = async (values, { setErrors, resetForm }) => {
     try {
-      
-      const response = await axios.post(
-        `http://localhost:3000/api/login`,
-        values
-      );
-
+      console.log("enter handlesubmit");
+      console.log("values::",values)
+      const response = await axios.post(`http://localhost:3000/api/admin_login`,values);
+console.log("requset post or not");
       console.log("Login:", response.data);
 
       
@@ -80,7 +78,8 @@ export default function RegFormComponent() {
     } catch (error) {
       console.error("Not Submitted", error);
       setServeError(true);
-      console.log("response.data.errors::", response.data.errors);
+      // console.log("response.data.errors::",response.data.errors);
+      console.log("error",error)
     } 
   };
  
@@ -158,14 +157,14 @@ export default function RegFormComponent() {
                         <div className="form-group text-center">
                           
                           <label
-                           htmlFor="username"
+                           htmlFor="password"
                            className="form-label"
                            style={{ color: "black" }}
                          >
                            Password
                        
                          <Field
-                           type="text"
+                           type="password"
                            id="password"
                            name="password"
                            // placeholder="Name"

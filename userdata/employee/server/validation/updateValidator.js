@@ -2,9 +2,9 @@
 // import validator from "validator";
 const isEmpty=require('../validation/isEmpty.js');
 const validator=require('validator');
-const employeeSchema=require('../db/models/users.js')
+const users=require('../db/models/users.js')
 
-// import employeeSchema from "../db/models/employee.schema.js";
+// import users from "../db/models/employee.schema.js";
 async function updateValidator(data){
 const errors={}
 data.name=!isEmpty(data.name)?data.name:"";
@@ -41,7 +41,7 @@ if(!validator.isLength(data.name,{min:2,max:30})){
 // if(!validator.isEmail(data.email)){
 //     errors.email_invalid="Email is invalid"
 // }
-// let email_count=await employeeSchema.countDocuments({
+// let email_count=await users.countDocuments({
 //     "email":data.email,
 // });
 
@@ -83,7 +83,7 @@ if (!validator.isEmpty(data.email) && data.email !== data.currentEmail) {
     }
   
     // Check if the email exists for any other user except the current user
-    const emailExistsForOtherUser = await employeeSchema.findOne({
+    const emailExistsForOtherUser = await users.findOne({
       email: data.email,
       _id: { $ne: data._id }, // Exclude the current user ID
     });

@@ -20,8 +20,8 @@ module.exports = {
               district:"pathanamthitta",
               role:"HR",
               jdate:"22-3-2015",
+              password:"$2a$10$z./5Y9gMxNnqETFOG8VCW.8aEYnC9UzNcp4w1hqZ1J5FkEzsvbBga",  //Admin@123
               usertype:"6582ce130a0dd1bc7fe48dae",
-              password:"$2y$10$0k7NObOJgt8j3OoP5rYk6OIer.z/1LWK4CGLhUKk8xsqGK1F2ic/G"  //Admin@123
           },
         ]);
         console.log(inserted.length + ' documents inserted');
