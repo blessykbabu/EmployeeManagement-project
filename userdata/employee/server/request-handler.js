@@ -3,6 +3,7 @@
 
 // import users from "./db/models/employee.schema.js";
 const users=require('./db/models/users.js');
+const usertypes=require('./db/models/usertype.schema.js')
 
 // const successFunction=require('./utils/response-handler.js');
 // const errorFunction=require('./utils/response-handler.js');
@@ -330,7 +331,7 @@ async function admin_Login(req,res){
       // console.log("user",user)
       
 // let user = await users.findOne({ email }).populate('usertype');
-console.log("user", user);
+     console.log("user", user);
 
       if(!user){
         let response=errorFunction({statusCode:400,message:"User not found"})

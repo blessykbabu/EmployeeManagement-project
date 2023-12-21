@@ -21,7 +21,7 @@ module.exports = {
               role:"HR",
               jdate:"22-3-2015",
               password:"$2a$10$z./5Y9gMxNnqETFOG8VCW.8aEYnC9UzNcp4w1hqZ1J5FkEzsvbBga",  //Admin@123
-              usertype:"6582ce130a0dd1bc7fe48dae",
+              usertype:"6582ce130a0dd1bc7fe48dae"
           },
         ]);
         console.log(inserted.length + ' documents inserted');
@@ -40,7 +40,7 @@ module.exports = {
       if ('users' in models) {
         const users = models.users;
         const deleted = await users.deleteMany({
-          _id:  "6582bc69818113e62b231703",
+          _id: {$in:["6582bc69818113e62b231703"]} ,
         });
         console.log(deleted.deletedCount + ' documents deleted');
       } else {

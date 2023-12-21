@@ -58,8 +58,8 @@ export default function AdminLogin() {
     try {
       console.log("enter handlesubmit");
       console.log("values::",values)
-      const response = await axios.post(`http://localhost:3000/api/admin_login`,values);
-console.log("requset post or not");
+      const response = await axios.post(`http://localhost:3000/api/login`,values);
+// console.log("requset post or not");
       console.log("Login:", response.data);
 
       

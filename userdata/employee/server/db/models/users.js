@@ -32,7 +32,7 @@ const users = new mongoose.Schema(
     },
     usertype: { 
       type: mongoose.Schema.Types.ObjectId,
-       ref: "usertypes",
+       ref: "usertypes"
        },
     deleted: {
       type: Boolean,
