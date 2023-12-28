@@ -1,5 +1,5 @@
 const bcrypt=require("bcrypt")
-
+const setPassword=require('../utils/userEmail-template/setPassword')
 //generate random password
 function generateRndomPassword(length){
     let charset="abhbbuhuhuhjIIKKKIOBNMOPRTYYS1234589@#";

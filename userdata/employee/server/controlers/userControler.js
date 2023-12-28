@@ -14,7 +14,8 @@ const Regvalidator = require("../validation/RegValidator.js");
 const updateValidator = require("../validation/updateValidator.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
+const setPassword=require('../utils/userEmail-template/setPassword.js')
+const sendEmail=require('../utils/userEmail-template/send-email.js')
 const { sign } = jwt;
 
 // **********For registration**********************
@@ -48,7 +49,14 @@ async function addNewEmployee(req, res) {
         role,
         jdate,
         password : hashed_password,
+        usertype:"6582ce130a0dd1bc7fe48dad"
+        
       });
+
+      let email_template=await setPassword(
+        name,email,password
+      );
+      await sendEmail(email,"Account details",email_template)
       if (result) {
         let response = successFunction({
           statusCode: 200,
@@ -56,6 +64,7 @@ async function addNewEmployee(req, res) {
           message: "Registration successful",
         });
         return res.status(200).send(response);
+        
       } else {
         // return res.status(400).send("Registration failed");
         let response = errorFunction({

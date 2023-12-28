@@ -8,7 +8,7 @@ margin:0 auto;`
 
 function Loading() {
   let [loading, setLoading] = useState(true);
-  let [color, setColor] = useState("white");
+  let [color, setColor] = useState("blue");
 
   return (
     <div className="sweet-loading d-flex justify-content-center ">
