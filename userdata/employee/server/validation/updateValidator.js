@@ -1,5 +1,3 @@
-// import isEmpty from "./isEmpty.js";
-// import validator from "validator";
 const isEmpty=require('../validation/isEmpty.js');
 const validator=require('validator');
 const users=require('../db/models/users.js')

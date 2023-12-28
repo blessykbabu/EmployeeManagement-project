@@ -38,6 +38,7 @@ import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { object, string, number } from "yup";
 import axios from "axios";
+import {  useNavigate } from "react-router-dom";
 // import SuccessComponent from "./SuccessComponent";
 // import ErrorComponent from "./ErrorComponent";
 // import Loading from "./Loading";
@@ -47,7 +48,7 @@ export default function AdminLogin() {
   const [serverError, setServeError] = useState("");
   const [validationMsg, setvalidationMsg] = useState("");
   const [backendError, setbackendError] = useState({});
- 
+  const navigate = useNavigate();
   const initialValues = {
     email: "",
     password:"",
@@ -56,12 +57,12 @@ export default function AdminLogin() {
 
   const handleSubmit = async (values, { setErrors, resetForm }) => {
     try {
-      console.log("enter handlesubmit");
       console.log("values::",values)
-      const response = await axios.post(`http://localhost:3000/api/login`,values);
+      const response = await axios.post(`http://localhost:3000/login`,values);
 // console.log("requset post or not");
       console.log("Login:", response.data);
-
+      // localStorage.setItem("token", response.token);
+      // location.href = "http://localhost:3000/employee";
       
       if (response.data.error) {
         setbackendError(response.data.error);
@@ -72,6 +73,21 @@ export default function AdminLogin() {
       } else if (response.data.success) {
         setServerSuccess(true);
         setvalidationMsg(response.data.message);
+        const token=response.data.data;
+        localStorage.setItem('token',token);
+        console.log("token:",token);
+
+      // Check the role and redirect accordingly
+      if (response.data.usertype=== 'admin') {
+        navigate('/admin/dashboard')
+
+      } else if (response.data.usertype === 'employee') {
+        navigate('/employee/dashboard')
+
+      } else {
+        console.error("Unknown user:", response.data.usertype);
+      }
+
       }
       resetForm();
       

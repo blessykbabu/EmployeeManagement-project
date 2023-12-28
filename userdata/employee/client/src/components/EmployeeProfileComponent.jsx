@@ -95,7 +95,12 @@ export default function EmployeeProfileComponent() {
 
   useEffect(() => {
     try {
-      axios.get(`http://localhost:3000/api/emp-list?page=${currentPage}&pageSize=${pageSize}`)
+      const token = localStorage.getItem("token");
+      axios.get(`http://localhost:3000/employee/list?page=${currentPage}&pageSize=${pageSize}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         setLists(response.data.data.datas);
         console.log("total_pages",response.data.data.total_pages);

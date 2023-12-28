@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import RegFormComponent from "./RegFormComponent";
 import EmployeeProfileComponent from "./EmployeeProfileComponent";
 import MainPageComponent from "./MainPageComponent";
@@ -42,12 +42,12 @@ export default function LinkComponent(){
       <li className="nav-item m-4">
        <Link to="/login" style={{textDecoration:"none",color:"white"}}>Login</Link>
         </li>
-        <li className="nav-item m-4">
+        {/* <li className="nav-item m-4">
         <Link to="/registration" style={{textDecoration:"none",color:"white"}}>Registration</Link>
         </li>
         <li className="nav-item m-4">
        <Link to="/view" style={{textDecoration:"none",color:"white"}}>Employee List</Link>
-        </li>
+        </li> */}
       </ul>
     </div>
   </div>

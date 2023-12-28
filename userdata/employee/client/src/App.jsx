@@ -1,18 +1,20 @@
 import { useState } from 'react'
-import {BrowserRouter as Router,Link,Routes,Route} from 'react-router-dom'
+import {BrowserRouter as Router,Link,Routes,Route,useNavigate} from 'react-router-dom'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-
-
-
-import EmployeeProfileComponent from './components/EmployeeProfileComponent'
+// import MainPageComponent from './components/MainPageComponent'
+import AdminLogin from './components/AdminLogin'
+import AdminDasboard from './components/AdminDasboard'
 import RegFormComponent from './components/RegFormComponent'
-import LinkComponent from './components/LinkComponent'
-import EmployeeComponent from './components/EmployeeComponent';
-import MainPageComponent from './components/MainPageComponent'
-import SuccessComponent from './components/SuccessComponent'
-// import Loading from './components/Loading';
+import UpdateComponent from './components/updateComponent'
+import EmployeeProfileComponent from './components/EmployeeProfileComponent'
+import HomeComponent from './components/HomeComponent'
+import { Logout } from './components/Logout'
+import EmployeeDasboard from './components/EmployeeDasboard'
+import ProfileComponent from './components/ProfileComponent'
+
+
 
 
 function App() {
@@ -20,13 +22,24 @@ function App() {
 
   return (
     <>
-    {/* <RegFormComponent/> */}
-    {/* <EmployeeProfileComponent/> */}
-   {/* <EmployeeComponent/> */}
     
-   {/* <LinkComponent/> */}
-   <MainPageComponent/>
-   {/* <Employee2/> */}
+  
+      {/* <MainPageComponent/> */}
+      <Router>
+      <Routes>
+        <Route path="/" element={<HomeComponent/>}/>
+        <Route path="/login" element={<AdminLogin/>}/>
+        <Route path="/admin/dashboard" element={<AdminDasboard/>} />
+        <Route path="/registration" element={<RegFormComponent/>} />
+        <Route path="/view" element={<EmployeeProfileComponent/>} />
+        <Route path="/profile/:id" element={<UpdateComponent/>} />
+        <Route path="/logout" element={<Logout/>}/>
+        <Route path="/employee/dashboard" element={<EmployeeDasboard/>}/>
+        <Route path="/myprofile" element={<ProfileComponent/>}/>
+
+      </Routes>
+    </Router>
+   {/* <HomeComponent/>  */}
    {/* <SuccessComponent/> */}
    {/* <Loading/> */}
 

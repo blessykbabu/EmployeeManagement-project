@@ -3,7 +3,6 @@ import { useParams, Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-// import SuccessUpdate from "./SuccessUpdate";
 import SuccessDelete from "./SuccessDelete";
 import ErrorComponent from "./ErrorComponent";
 import Loading from "./Loading";
@@ -38,7 +37,14 @@ function UpdateComponent() {
   };
   const getDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/get-employee/${id}`);
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`http://localhost:3000/employee/profile/${id}`,
+       {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );;
       formik.setValues(response.data.data);
       setEditData(response.data.data);
     } catch (error) {
@@ -61,7 +67,13 @@ function UpdateComponent() {
   const onDelete = async () => {
     setLoading(true)
     try {
-      const response = await axios.delete(`http://localhost:3000/api/delete/${id}`);
+      const token = localStorage.getItem("token");
+      const response = await axios.delete(`http://localhost:3000/employee/delete/${id}`,  {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );;
       if (response.data.success) {
         setDeletedata(true); // Set deletedata to true upon successful deletion
         setValidationMessage(response.data.message);
@@ -92,25 +104,7 @@ function UpdateComponent() {
       .matches(/^[6-9]\d{9}$/, "Please enter a valid phone number.")
       .required("Required"),
   });
-  // const onDelete = async () => {
-  //   try {
-  //     setLoading(true)
-  //     axios
-  //       .delete(`http://localhost:3000/api/delete/${id}`)
-  //       .then((response) => {
-  //         // setData(response.data);
-  //         setDeletedata(response.data.success);
-  //         console.log("response.data.success:",response.data.success)
-  //       });
-  //   } catch (error) {
-  //     setError(true);
-  //     console.log("Error in delete", error);
-  //   }finally{
-  //     setTimeout(()=>{
-  //       setLoading(false)
-  //     },500)
-  //   }
-  // };
+ 
   const formik = useFormik({
     initialValues: {
       name: editData.name || "",
@@ -123,10 +117,16 @@ function UpdateComponent() {
     validationSchema,
     onSubmit: async (values, { setErrors, resetForm }) => {
       try {
+        const token = localStorage.getItem("token");
         setLoading(true)
         const response = await axios.put(
-          `http://localhost:3000/api/update/${id}`,
-          values
+          `http://localhost:3000/employee/update/${id}`,
+          values,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         console.log("Form Submitted", response.data.data);
         if (response.data.errors) {

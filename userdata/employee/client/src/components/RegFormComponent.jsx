@@ -487,10 +487,16 @@ export default function RegFormComponent() {
 
   const handleSubmit = async (values, { setErrors, resetForm }) => {
     try {
+      const token = localStorage.getItem("token");
       setLoading(true);
       const response = await axios.post(
-        `http://localhost:3000/api/register`,
-        values
+        "http://localhost:3000/employee",
+        values,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       console.log("Form Submitted", response.data);
