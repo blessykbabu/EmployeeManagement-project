@@ -5,7 +5,7 @@ const errorFunction = require("../utils/response-handler.js").errorFunction;
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
 const revokeManager=require('../manager/revokeManager.js')
-const { sign } = jwt;
+const { sign }=jwt;
 
 
 
