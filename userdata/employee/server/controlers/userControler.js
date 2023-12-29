@@ -14,9 +14,8 @@ const Regvalidator = require("../validation/RegValidator.js");
 const updateValidator = require("../validation/updateValidator.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const setPassword=require('../utils/userEmail-template/setPassword.js')
-const sendEmail=require('../utils/userEmail-template/send-email.js')
-const { sign } = jwt;
+const setPassword=require('../utils/userEmail-template/setPassword.js').setPassword;
+const sendEmail=require('../utils/userEmail-template/send-email.js').sendEmail;
 
 // **********For registration**********************
 
@@ -52,20 +51,28 @@ async function addNewEmployee(req, res) {
         usertype:"6582ce130a0dd1bc7fe48dad"
         
       });
-
+   
       let email_template=await setPassword(
-        name,email,password
+        name,email,usrPassword
       );
-      await sendEmail(email,"Account details",email_template)
-      if (result) {
+      console.log("email_template:",email_template)
+      let email_flag=await sendEmail(email,"Account details",email_template)
+      if (result && email_flag) {
         let response = successFunction({
-          statusCode: 200,
+          statusCode: 201,
           data: result,
           message: "Registration successful",
         });
-        return res.status(200).send(response);
+        return res.status(201).send(response);
         
-      } else {
+      }else if(!email_flag){
+        let response=errorFunction({
+          statusCode:400,
+          message:"User created email is not send"
+        })
+        return res.status(400).send(response);
+      }
+       else {
         // return res.status(400).send("Registration failed");
         let response = errorFunction({
           statusCode: 400,

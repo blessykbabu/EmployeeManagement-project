@@ -150,6 +150,31 @@ exports.login = async function (req, res) {
     });
   };
   
+  exports.resetPasswordControler = async function (req, res) {
+    try {
+      const authHeader=req.headers['authorization']
+      const token=authHeader.split(' ')[1];
+      let password=req.body;
+      let confirmPassword=req.body;
+      decode-jwt.decode(token)
+      let user=await users.findOne({
+        $and:[{_id:decoded.user_id}]
+      });
+      if(user){
+      let salt=bcrypt.genSaltSync(10);
+      let password_hash=bcrypt.hashSync(password,salt);
+      let data= await users.updateOne(
+        
+          {_id:decoded.user_id}
+        ,
+        { $set:{password:password_hash}}
+      )
+
+      }
+    } catch (error) {
+      
+    }
+  }
   
 
   exports.logout = async function (req, res) {

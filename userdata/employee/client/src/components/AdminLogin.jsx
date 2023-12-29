@@ -115,7 +115,7 @@ export default function AdminLogin() {
                     email: string().email().required("Required"),
                     password: string()
                 .required("Required")
-                .min(6, "Password is too short - should be 6 chars minimum"),
+               
 
                  
                   })}
