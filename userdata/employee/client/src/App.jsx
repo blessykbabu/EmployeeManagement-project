@@ -4,7 +4,6 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 // import MainPageComponent from './components/MainPageComponent'
-import AdminLogin from './components/AdminLogin'
 import AdminDasboard from './components/AdminDasboard'
 import RegFormComponent from './components/RegFormComponent'
 import UpdateComponent from './components/updateComponent'
@@ -13,6 +12,8 @@ import HomeComponent from './components/HomeComponent'
 import { Logout } from './components/Logout'
 import EmployeeDasboard from './components/EmployeeDasboard'
 import ProfileComponent from './components/ProfileComponent'
+import Login from './components/Login'
+import ResetPassword from './components/ResetPassword'
 
 
 
@@ -28,7 +29,7 @@ function App() {
       <Router>
       <Routes>
         <Route path="/" element={<HomeComponent/>}/>
-        <Route path="/login" element={<AdminLogin/>}/>
+        <Route path="/login" element={<Login/>}/>
         <Route path="/admin/dashboard" element={<AdminDasboard/>} />
         <Route path="/registration" element={<RegFormComponent/>} />
         <Route path="/view" element={<EmployeeProfileComponent/>} />
@@ -36,6 +37,8 @@ function App() {
         <Route path="/logout" element={<Logout/>}/>
         <Route path="/employee/dashboard" element={<EmployeeDasboard/>}/>
         <Route path="/myprofile" element={<ProfileComponent/>}/>
+        <Route path="/reset/password/:id" element={<ResetPassword/>}/>
+
 
       </Routes>
     </Router>

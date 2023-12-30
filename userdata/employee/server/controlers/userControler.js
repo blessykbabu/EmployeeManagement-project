@@ -280,18 +280,59 @@ async function deleteProfile(req, res) {
 
 async function profile(req, res) {
   try {
-      let user = req.user;
-      console.log("user:",user)
-      let userDetails = await users.findOne({ _id: user.id },{ password: 0 });
-      if(userDetails) {
-          return res.json(userDetails);
-      }
-      return res.status(404).send("User not found");
+    const id = req.user.id; 
+    console.log("user id",id)
+    let employee = await users.findOne({
+      $and: [{ _id: id }, { deleted: { $ne: true } }],
+    });
+  
+    if (employee) {
+      //   return res.json(result);
+
+      let response = successFunction({
+        statusCode: 200,
+        data: employee,
+        message: "Data Recieaved",
+      });
+      return res.status(200).send(response);
+    } else {
+      let response = errorFunction({
+        statusCode: 404,
+        message: "user not found",
+      });
+      return res.status(404).send(response);
+    }
+
+    // return res.status(200).send({ msg: "upload profile data" });
   } catch (error) {
-      console.log(error);
-      res.status(500).send("Error");
+    console.log(error);
+    // return res.status(500).send("Error occured");
+
+    let response = errorFunction({
+      statusCode: 404,
+      message: "something went wrong!",
+    });
+    return res.status(404).send(response);
   }
 }
+
+
+
+// async function profile(req, res) {
+//   try {
+//     const employeeId = req.params.id;
+//     const employee = await users.findById(employeeId);
+
+//     if (!employee) {
+//       return res.status(404).json({ message: 'Employee not found' });
+//     }
+
+//     res.status(200).json({ data: employee });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Internal Server Error' });
+//   }
+//   }
 module.exports = {
   addNewEmployee,
   fetchAll,

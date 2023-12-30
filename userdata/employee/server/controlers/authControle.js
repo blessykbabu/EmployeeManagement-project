@@ -152,29 +152,54 @@ exports.login = async function (req, res) {
   
   exports.resetPasswordControler = async function (req, res) {
     try {
-      const authHeader=req.headers['authorization']
-      const token=authHeader.split(' ')[1];
-      let password=req.body;
-      let confirmPassword=req.body;
-      decode-jwt.decode(token)
-      let user=await users.findOne({
-        $and:[{_id:decoded.user_id}]
+      const authHeader = req.headers["authorization"];
+      const token = authHeader.split(" ")[1];
+  
+      let password = req.body.password;
+  
+      decoded = jwt.decode(token);
+     
+      let user = await users.findOne({
+        $and: [{ _id: decoded.user_id }]
       });
-      if(user){
-      let salt=bcrypt.genSaltSync(10);
-      let password_hash=bcrypt.hashSync(password,salt);
-      let data= await users.updateOne(
-        
-          {_id:decoded.user_id}
-        ,
-        { $set:{password:password_hash}}
-      )
-
+      if (user) {
+        let salt = bcrypt.genSaltSync(10);
+        let password_hash = bcrypt.hashSync(password, salt);
+        let data = await users.updateOne(
+          { _id: decoded.user_id },
+          { $set: { password: password_hash} }
+        );
+        if (data.matchedCount === 1 && data.modifiedCount == 1) {
+          let response = successFunction({
+            statusCode: 200,
+            message: "Password changed successfully",
+          });
+          res.status(response.statusCode).send(response);
+          return;
+        } else if (data.matchedCount === 0) {
+          let response = errorFunction({
+            statusCode: 404,
+            message: "User not found",
+          });
+          res.status(statusCode).send(response);
+          return;
+        } else {
+          let response = errorFunction({
+            statusCode: 400,
+            message: "Password reset failed",
+          });
+          res.status(statusCode).send(response);
+          return;
+        }
+      } else {
+        let response = errorFunction({ statusCode: 403, message: "Forbidden" });
+        res.status(statusCode).send(response);
+        return;
       }
     } catch (error) {
-      
+      console.log("Error occure in reset password:",error.message ? error.message : message);
     }
-  }
+  };
   
 
   exports.logout = async function (req, res) {

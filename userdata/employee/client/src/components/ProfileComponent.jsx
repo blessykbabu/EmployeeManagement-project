@@ -10,7 +10,7 @@ import SuccessComponent from "./SuccessComponent";
 
 function ProfileComponent() {
   const { id } = useParams("");
-
+console.log("id in employee:",id)
   const [editData, setEditData] = useState({});
   const [update, setUpdate] = useState(null);
   const [deletedata, setDeletedata] = useState(false);
@@ -35,28 +35,22 @@ function ProfileComponent() {
   const handleError = () => {
     setError(false);
   };
- 
-
-
-
-const getDetails = async () => {
-  try {
-    let token = localStorage.getItem("token");
-
-    const response = await axios.get("http://localhost:3000/myprofile", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    const employeeData = response.data.data;
-    formik.setValues(employeeData);
-    setEditData(employeeData);
-  
+  const getDetails = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`http://localhost:3000/myprofile`,
+       {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );;
+      formik.setValues(response.data.data);
+      setEditData(response.data.data);
     } catch (error) {
       if (error.response && error.response.status === 404) {
         // User not found error
-        console.log("User not found in profile");
+        console.log("User not found");
         setDeletedata(true); // Set deletedata to true to indicate user deletion
       } else {
         // Other types of errors
@@ -70,32 +64,7 @@ const getDetails = async () => {
     }
   };
   
-  const onDelete = async () => {
-    setLoading(true)
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.delete(`http://localhost:3000/employee/delete/${id}`,  {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );;
-      if (response.data.success) {
-        setDeletedata(true); // Set deletedata to true upon successful deletion
-        setValidationMessage(response.data.message);
-      } else {
-        setError(true); // Set error in case of deletion failure
-      }
-      setUpdate(false);
-    } catch (error) {
-      setError(true); // Set error in case of request failure
-      console.log("Error in delete", error);
-    } finally {
-      setTimeout(() => {
-        setLoading(false);
-      }, 300);
-    }
-  };
+
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -283,14 +252,7 @@ const getDetails = async () => {
                 Update
               </button>
 
-              <button
-                onClick={onDelete}
-                type="button"
-                className="btn btn-success"
-                style={{ color: "white" }}
-              >
-                Delete
-              </button>
+            
               {/* </Link> */}
             </div>
             {/* {update && <SuccessUpdate onClose={handleupdate}/>}
@@ -306,9 +268,9 @@ const getDetails = async () => {
       {update && (
         <SuccessComponent message={validationMessage} onClose={handleupdate} />
       )}
-      {deletedata && (
+      {/* {deletedata && (
         <SuccessDelete message={validationMessage} onClose={handledelete} />
-      )}
+      )} */}
       {error && (
         <ErrorComponent message={validationMessage} onClose={handleError} />
       )}
