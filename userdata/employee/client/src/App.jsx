@@ -37,7 +37,7 @@ function App() {
         <Route path="/logout" element={<Logout/>}/>
         <Route path="/employee/dashboard" element={<EmployeeDasboard/>}/>
         <Route path="/myprofile" element={<ProfileComponent/>}/>
-        <Route path="/reset/password/:id" element={<ResetPassword/>}/>
+        <Route path="/reset/password" element={<ResetPassword/>}/>
 
 
       </Routes>
