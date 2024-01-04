@@ -39,7 +39,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { object, string, number } from "yup";
 import axios from "axios";
 import {FaEye,FaEyeSlash} from "react-icons/fa"
-import {  useNavigate } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 
 // import SuccessComponent from "./SuccessComponent";
 // import ErrorComponent from "./ErrorComponent";
@@ -81,13 +81,24 @@ export default function Login() {
         const token=response.data.data;
         localStorage.setItem('token',token);
         console.log("token:",token);
-
-      // Check the role and redirect accordingly
+        // console.log("Logged in employee id:", response.data._id);
       if (response.data.usertype=== 'admin') {
         navigate('/admin/dashboard')
 
       } else if (response.data.usertype === 'employee') {
-        navigate('/reset/password')
+        const employeeId = response.data._id;
+        localStorage.setItem('employeeId', employeeId);
+        console.log("Logged in employee id:", employeeId);
+        const resetPassword=response.data.Resetpassword;
+        console.log("password reset:",resetPassword)
+        
+        if(resetPassword){
+          navigate('/employee/dashboard')
+        }
+        else{
+          navigate('/reset/password')
+        }
+       
 
       } else {
         console.error("Unknown user:", response.data.usertype);
@@ -115,6 +126,8 @@ export default function Login() {
            
             <div className="lgfrm">
               <div className="container mx-auto col-sm-12 col-md-12 col-lg-5 justify-content-center">
+              <h1 className="m-5" style={{textAlign:'center',color:"green"}}>LogIn</h1>
+
                 <Formik
                   initialValues={initialValues}
                   onSubmit={handleSubmit}
@@ -213,12 +226,16 @@ export default function Login() {
                         <button className="btn btn-success m-3" type="submit">
                           Login
                         </button>
-                        
+                        <p>
+        <Link to="/forgot-password">Forgot Password?</Link>
+      </p>
                         </div>
                       </div>
                     </Form>
+                    
                   )}
                 </Formik>
+      
               </div>
             </div>
            

@@ -34,7 +34,7 @@ const users = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
        ref: "usertypes"
        },
-       onetime_password:{
+       Resetpassword:{
         type:Boolean,
         default:false
        },

@@ -14,6 +14,7 @@ import EmployeeDasboard from './components/EmployeeDasboard'
 import ProfileComponent from './components/ProfileComponent'
 import Login from './components/Login'
 import ResetPassword from './components/ResetPassword'
+import Forgot from './components/Fogot'
 
 
 
@@ -36,8 +37,12 @@ function App() {
         <Route path="/profile/:id" element={<UpdateComponent/>} />
         <Route path="/logout" element={<Logout/>}/>
         <Route path="/employee/dashboard" element={<EmployeeDasboard/>}/>
-        <Route path="/myprofile" element={<ProfileComponent/>}/>
+        <Route path="/profile" element={<ProfileComponent/>}/>
         <Route path="/reset/password" element={<ResetPassword/>}/>
+        <Route path="/forgot/password" element={<ResetPassword/>}/>
+        <Route path="/forgot-password" element={<Forgot/>}/>
+
+
 
 
       </Routes>

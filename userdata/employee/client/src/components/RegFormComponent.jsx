@@ -529,7 +529,7 @@ export default function RegFormComponent() {
     } finally {
       setTimeout(() => {
         setLoading(false);
-      }, 2000);
+      },200);
     }
   };
   //  const  handleClose =()=>{
