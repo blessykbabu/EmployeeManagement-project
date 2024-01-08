@@ -106,8 +106,20 @@ async function fetchAll(req, res) {
     let count = Number(await users.countDocuments({ deleted: { $ne: true } }));
     const pageNumber = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || count;
+    let keyword=req.query.keyword;
+    let filters=[];
+    if(keyword){
+      filters.push({
+        $or:[
+          {"name":{$regex:keyword,$options:"i"}},
+          {"district":{$regex:keyword,$options:"i"}},
+          {"role":{$regex:keyword,$options:"i"}},
+        ]
+      })
+    }
+    filters.push({ deleted: { $ne: true } })
     let info = await users
-      .find({ deleted: { $ne: true } })
+      .find(filters.length > 0 ? {$and: filters}:null)
       .sort({ _id: -1 })
       .skip(pageSize * (pageNumber - 1))
       .limit(pageSize);

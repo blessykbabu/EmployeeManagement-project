@@ -92,11 +92,16 @@ export default function EmployeeProfileComponent() {
   const [pageSize, setPageSize] = useState(10); 
   const [totalPages, setTotalPages] = useState(0);
   const[loading,setLoading]=useState(true)
-
+  const[keyword,setkeyword]=useState({
+    // keyword:""
+  }
+  )
+  
+  
   useEffect(() => {
     try {
       const token = localStorage.getItem("token");
-      axios.get(`http://localhost:3000/employee/list?page=${currentPage}&pageSize=${pageSize}`, {
+      axios.get(`http://localhost:3000/employee/list?page=${currentPage}&pageSize=${pageSize}&keyword=${keyword}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -119,13 +124,39 @@ export default function EmployeeProfileComponent() {
     }
  
   }, [currentPage, pageSize,loading]);
+  const handleChange = (e) => {
+    console.log("reached handlechange")
+    console.log("value:",e.target.value)
 
+        const value = e.target.value;
+        setkeyword({
+          ...keyword,
+          [e.target.name]: value
+        });
+      };
   return (
     <>
+        <div>
+        <form className="d" role="search">
+        <input
+          className="form-control me-2"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+          id="keyword" name="keyword" value={keyword.keyword}
+          onChange={handleChange}
+        />
+        <button className="btn btn-outline-success" type="submit">
+          Search
+        </button>
+      </form>
+      </div>
     <div>
       {loading?
       (<Loading/>):(
-  
+    
+      
+      
       <div className="listTable">
         <h2 style={{ textAlign: "center", color: "gray" }}>EMPLOYEE LIST</h2>
         <div className="container ">
