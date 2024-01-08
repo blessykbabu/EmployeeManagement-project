@@ -103,10 +103,12 @@ async function addNewEmployee(req, res) {
 
 async function fetchAll(req, res) {
   try {
+    console.log("reached fethall");
     let count = Number(await users.countDocuments({ deleted: { $ne: true } }));
     const pageNumber = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || count;
     let keyword=req.query.keyword;
+    console.log("keyword:",keyword);
     let filters=[];
     if(keyword){
       filters.push({

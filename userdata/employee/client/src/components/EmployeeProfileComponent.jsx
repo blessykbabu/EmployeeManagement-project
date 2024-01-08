@@ -128,10 +128,25 @@ export default function EmployeeProfileComponent() {
     console.log("reached handlechange")
     console.log("value:",e.target.value)
 
-        const value = e.target.value;
-        setkeyword({
-          ...keyword,
-          [e.target.name]: value
+        // const value = e.target.value;
+        // setkeyword({
+        //   ...keyword,
+        //   [e.target.name]: value
+        // });
+
+        const token = localStorage.getItem("token");
+        axios.get(`http://localhost:3000/employee/list?page=${currentPage}&pageSize=${pageSize}&keyword=${e.target.value}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          setLists(response.data.data.datas);
+          console.log("total_pages",response.data.data.total_pages);
+          setTotalPages(response.data.data.total_pages);
+        })
+        .catch((error) => {
+          console.log("get error:", error.message ? error.message : error);
         });
       };
   return (
@@ -143,10 +158,10 @@ export default function EmployeeProfileComponent() {
           type="search"
           placeholder="Search"
           aria-label="Search"
-          id="keyword" name="keyword" value={keyword.keyword}
-          onChange={handleChange}
+          id="keyword" name="keyword" 
+          onKeyUp={handleChange}
         />
-        <button className="btn btn-outline-success" type="submit">
+        <button className="btn btn-outline-success">
           Search
         </button>
       </form>
