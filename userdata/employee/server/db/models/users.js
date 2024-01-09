@@ -30,6 +30,9 @@ const users = new mongoose.Schema(
     password: {
       type: String
     },
+    image:{
+      type: String
+    },
     usertype: { 
       type: mongoose.Schema.Types.ObjectId,
        ref: "usertypes"

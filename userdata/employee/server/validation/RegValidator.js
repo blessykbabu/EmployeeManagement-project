@@ -19,6 +19,7 @@ data.district=!isEmpty(data.district)?data.district:"";
 data.role=!isEmpty(data.role)?data.role:"";
 
 data.jdate=!isEmpty(data.jdate)?data.jdate:"";
+data.image=!isEmpty(data.image)?data.image:"";
 
 
 

@@ -2,6 +2,7 @@ const users = require("../db/models/users.js");
 const usertypes = require("../db/models/usertypes.js");
 const generateRndomPassword = require("../manager/userManger.js");
 const auth=require('../middleware/auth.js');
+const fileuploader=require("../utils/file-uploads.js").fileuploader;
 const randomPasswordGenerator =
   require("../manager/userManger.js").randomPasswordGenerator;
 
@@ -21,7 +22,7 @@ const sendEmail=require('../utils/userEmail-template/send-email.js').sendEmail;
 
 async function addNewEmployee(req, res) {
   try {
-    let { name, email, phone, district, role, jdate } = req.body;
+    let { name, email, phone, district, role, jdate,image } = req.body;
     let validationResult = await Regvalidator(req.body);
     console.log("valiadtionResult::", validationResult);
     if (validationResult.isValid) {
@@ -40,6 +41,12 @@ async function addNewEmployee(req, res) {
       let usrPassword = generateRndomPassword(5);
       let salt = bcrypt.genSaltSync(10);
       let hashed_password = bcrypt.hashSync(usrPassword, salt);
+      let image_path;
+      if(image){
+        image_path=await fileuploader(image,"users");
+      }else{
+        image_path="no_image";
+      }
       let result = await users.create({
         name,
         email,
@@ -47,6 +54,7 @@ async function addNewEmployee(req, res) {
         district,
         role,
         jdate,
+        image:image_path,
         password : hashed_password,
         usertype:"6582ce130a0dd1bc7fe48dad"
         
