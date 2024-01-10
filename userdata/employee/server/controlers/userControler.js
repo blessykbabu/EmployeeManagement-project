@@ -41,6 +41,7 @@ async function addNewEmployee(req, res) {
       let usrPassword = generateRndomPassword(5);
       let salt = bcrypt.genSaltSync(10);
       let hashed_password = bcrypt.hashSync(usrPassword, salt);
+      console.log("image",image);
       let image_path;
       if(image){
         image_path=await fileuploader(image,"users");
@@ -63,7 +64,7 @@ async function addNewEmployee(req, res) {
       let email_template=await setPassword(
         name,email,usrPassword
       );
-      console.log("email_template:",email_template)
+      // console.log("email_template:",email_template)
       let email_flag=await sendEmail(email,"Account details",email_template)
       if (result && email_flag) {
         let response = successFunction({
@@ -76,7 +77,7 @@ async function addNewEmployee(req, res) {
       }else if(!email_flag){
         let response=errorFunction({
           statusCode:400,
-          message:"User created email is not send"
+          message:"User created, email is not send"
         })
         return res.status(400).send(response);
       }
@@ -302,19 +303,16 @@ async function deleteProfile(req, res) {
 
 async function profile(req, res) {
   try {
-    const id = req.user.id; 
-    console.log("user id",id)
-    let employee = await users.findOne({
-      $and: [{ _id: id }, { deleted: { $ne: true } }],
-    });
-  
-    if (employee) {
-      //   return res.json(result);
-
+    // console.log("reached the userprofile")
+    let user = req.user;
+    // console.log("user:",user)
+    let userDetails = await users.findOne({ _id: user.user_id },{ password: 0 });
+    // console.log("userdetails:",userDetails)
+    if (userDetails) {
       let response = successFunction({
         statusCode: 200,
-        data: employee,
-        message: "Data Recieaved",
+        data: userDetails,
+        message: "user data Recieaved",
       });
       return res.status(200).send(response);
     } else {
@@ -325,14 +323,12 @@ async function profile(req, res) {
       return res.status(404).send(response);
     }
 
-    // return res.status(200).send({ msg: "upload profile data" });
   } catch (error) {
     console.log(error);
-    // return res.status(500).send("Error occured");
 
     let response = errorFunction({
       statusCode: 404,
-      message: "something went wrong!",
+      message: "user not found",
     });
     return res.status(404).send(response);
   }

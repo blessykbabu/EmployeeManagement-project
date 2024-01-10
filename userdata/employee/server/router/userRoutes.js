@@ -3,7 +3,7 @@ const express=require("express");
 const router=express.Router();
 const userControler=require('../controlers/userControler');
 const accessControl = require('../utils/accesscontrol').accessControl;
-const auth=require('../middleware/auth').auth;
+const auth=require("../middleware/auth")
 const setAccessControl=(access_type)=>{
     return (req,res,next)=>{
         // const token = localStorage.getItem('token');
@@ -18,5 +18,5 @@ router.get('/employee/list',setAccessControl('1'),userControler.fetchAll);
 router.get('/employee/profile/:id',setAccessControl('1'),userControler.fetchProfile);
 router.put('/employee/update/:id',setAccessControl('1'),userControler.editProfile);
 router.delete('/employee/delete/:id',setAccessControl('1'),userControler.deleteProfile);
-router.get('/myprofile',setAccessControl('2'),userControler.profile);
+router.get('/myprofile',setAccessControl('2'),auth,userControler.profile);
 module.exports=router

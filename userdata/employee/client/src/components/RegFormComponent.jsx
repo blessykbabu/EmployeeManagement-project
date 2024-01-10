@@ -483,12 +483,37 @@ export default function RegFormComponent() {
     district: "",
     role: "",
     jdate: "",
+    image:""
+  };
+  const handleimage = (e,setFieldValue) => {
+    const file = e.target.files[0];
+    convertToBase64(file)
+      .then((base64) => {
+        setFieldValue("image", base64);
+      })
+      .catch((error) => {
+        console.error("Error converting image to base64:", error);
+      });
   };
 
-  const handleSubmit = async (values, { setErrors, resetForm }) => {
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = () => {
+        reject(error);
+      };
+    });
+  };
+  const handleSubmit = async (values, { setErrors, resetForm,setFieldValue }) => {
     try {
       const token = localStorage.getItem("token");
       setLoading(true);
+      console.log("values:",values);
+
       const response = await axios.post(
         "http://localhost:3000/employee",
         values,
@@ -498,7 +523,6 @@ export default function RegFormComponent() {
           },
         }
       );
-
       console.log("Form Submitted", response.data);
 
       // setServerSuccess(response.data.success)
@@ -582,6 +606,7 @@ export default function RegFormComponent() {
                     handleBlur,
                     handleSubmit,
                     isSubmitting,
+                    setFieldValue
                   }) => (
                     <Form>
                       <div
@@ -761,6 +786,37 @@ export default function RegFormComponent() {
                           {backendError.jdate_empty && (
                             <div>{backendError.jadte_empty}</div>
                           )}
+                        </div>
+
+                        <div
+                          className="mb-3"
+                          style={{ padding: 10, color: "red" }}
+                        >
+                          <label
+                            htmlFor="image"
+                            className="form-label"
+                            style={{ color: "black" }}
+                          >
+                            Image
+                            <input
+                              type="file"
+                              id="image"
+                              name="image"
+                              className="form-control"
+                              onChange={(e) =>
+                                handleimage(e, setFieldValue)
+                              }
+                              // onChange={handleimage}
+                            />
+                            <ErrorMessage
+                              name="image"
+                              component="div"
+                              style={{ color: "red" }}
+                            />
+                            {backendError.image_empty && (
+                              <div>{backendError.image_empty}</div>
+                            )}
+                          </label>
                         </div>
 
                         <button className="btn btn-success m-3" type="submit">
